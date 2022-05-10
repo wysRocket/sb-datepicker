@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
-	<script src="src/jquery.js"></script>
-	<script src="node_modules/php-date-formatter/js/php-date-formatter.min.js"></script>
-	<script src="node_modules/jquery-mousewheel/jquery.mousewheel.js"></script>
-	<script src="./jquery.datetimepicker.js"></script>
-	<script src="src/main.js"></script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="/vite-preact-dp/dist/assets/index.7240009d.css" />
+
+	<script type="module" crossorigin src="/vite-preact-dp/dist/assets/index.7231f72b.js"></script>
 </head>
+
 <body>
-	<h3>Inline DateTimePicker</h3>
-	<input type="text" id="datetimepicker3"/>
-	<input type="button" onclick="$('#datetimepicker3').datetimepicker({value:'2011/12/11 12:00'})" value="set inline value 2011/12/11 12:00"/><br><br>
+	<h3>DateTimePicker</h3>
+	<div id="datetimepicker3" />
+	<script type="module">
+		var pickedDateTime = window.initDataPicker(document.getElementById("datetimepicker3"))
+	</script>
+
+	<script src="pikaday.js"></script>
+	<script>
+		var picker = new Pikaday(
+			{
+				field: document.getElementById('datepicker'),
+				firstDay: 1,
+				minDate: new Date(),
+				maxDate: new Date(2020, 12, 31),
+				yearRange: [2000, 2020]
+			});
+	</script>
+
 </body>
+
 </html>

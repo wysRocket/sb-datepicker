@@ -8,8 +8,6 @@ export function App() {
 
   return (
     <>
-      <Logo />
-
       <DatePicker
         selected={startDate}
         showTimeSelect
