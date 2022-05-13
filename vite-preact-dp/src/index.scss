@@ -27,6 +27,8 @@ body {
   padding-top: 100px;
 }
 
-.popperClassName {
-  color: #fff;
+.react-datepicker__triangle {
+  position: absolute;
+  left: 0px;
+  transform: translate(150px, 0px);
 }

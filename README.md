@@ -1,81 +1,123 @@
-# jQuery DateTimePicker
-[Demo and Documentation](https://xdsoft.net/jqplugins/datetimepicker/)
+## DatePicker
 
-[![Build Status](https://travis-ci.org/xdan/datetimepicker.svg?branch=master)](https://travis-ci.org/xdan/datetimepicker)
-[![npm version](https://badge.fury.io/js/jquery-datetimepicker.svg)](https://badge.fury.io/js/jquery-datetimepicker)
-[![npm](https://img.shields.io/npm/dm/jquery-datetimepicker.svg)](https://www.npmjs.com/package/jquery-datetimepicker)
+Main variant build with the [ViteJS](https://vitejs.dev) because it compiles the bundle with the [ESBuild](https://esbuild.github.io)
 
-PLEASE. Help me update the documentation.
-[Doc.tpl](https://github.com/xdan/datetimepicker/blob/master/doc.tpl)
-This file will be automatically displayed on the site
+Entry-point is the `index.html` to run it i'm using [LiveServer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 
-# Installation
+inside `index.html` i'm connecting compiled version of [React Date Picker](https://www.npmjs.com/package/react-datepicker)
+compairing to any other module this one with 1.3M Weekly Downloads has best support
+
+Module can be upgraded with functionality and layout can be overwriten with `sass` variables inside
+folder [vite-preact-dp] after updating the Module it can be compiled with
 
 ```bash
-npm install jquery-datetimepicker
+npm run build
 ```
-OR
-```bash
-yarn add jquery-datetimepicker
-```
-or download [zip](https://github.com/xdan/datetimepicker/releases)
-# datetimepicker
-==============
 
-**!!! In the latest version the 'lang' option is obsolete. The language setting is now global. !!!**
+also need to import appropriate bundles to `index.html` cause their names are dynamicaly generated
 
-Use this:
-```javascript
-jQuery.datetimepicker.setLocale('en');
-```
-[Documentation][doc]
+# `datepicker` (component)
 
-jQuery Plugin Date and Time Picker
+# `docs` [DP Docs](https://github.com/Hacker0x01/react-datepicker/tree/master/docs)
 
-DateTimePicker
+General datepicker component.
 
-![ScreenShot](https://raw.github.com/xdan/datetimepicker/master/screen/1.png)
-
-DatePicker
-
-![ScreenShot](https://raw.github.com/xdan/datetimepicker/master/screen/2.png)
-
-TimePicker
-
-![ScreenShot](https://raw.github.com/xdan/datetimepicker/master/screen/3.png)
-
-Options to highlight individual dates or periods
-
-![ScreenShot](https://raw.github.com/Mingpao/datetimepicker/master/screen/4.png)
-
-![ScreenShot](https://raw.github.com/Mingpao/datetimepicker/master/screen/5.png)
-
-![ScreenShot](https://raw.github.com/Mingpao/datetimepicker/master/screen/6.png)
-
-[doc]: https://xdsoft.net/jqplugins/datetimepicker/
-
-### JS Build help
-
-**Requires Node and NPM** [Download and install node.js](http://nodejs.org/download/).
-
-Install:
-
-1. Install `bower` globally with `npm install -g bower`.
-2. Run `npm install`. npm will look at `package.json` and automatically install the necessary dependencies. 
-3. Run `bower install`, which installs front-end packages defined in `bower.json`.
-
-Notice: If you use Bower v1.5.2, you will get the error: `The "main" field cannot contain minified files`
-You can regress to version 1.3.12
-
-1. `npm uninstall bower -g`
-2. `npm install -g bower@1.3.12`
-
-Build:
-
-First install npm requirements: `npm install -g uglifycss concat-cli`
-Then build the files: `npm run build`
-
-When the build completes, you'll have the following files:
-- **build/jquery.datetimepicker.full.js** - browser file
-- **build/jquery.datetimepicker.full.min.js** - browser minified file
-- **build/jquery.datetimepicker.min.js** - amd module style minified file
+| name                         | type                           | default value   | description                                                                                   |
+| ---------------------------- | ------------------------------ | --------------- | --------------------------------------------------------------------------------------------- |
+| `allowSameDay`               | `bool`                         | `false`         |                                                                                               |
+| `ariaDescribedBy`            | `string`                       | `null`          |                                                                                               |
+| `ariaInvalid`                | `string`                       | `null`          |                                                                                               |
+| `ariaLabelledBy`             | `string`                       | `null`          |                                                                                               |
+| `ariaRequired`               | `string`                       | `null`          |                                                                                               |
+| `autoComplete`               | `string`                       |                 |                                                                                               |
+| `autoFocus`                  | `bool`                         |                 |                                                                                               |
+| `calendarClassName`          | `string`                       |                 |                                                                                               |
+| `children`                   | `node`                         |                 |                                                                                               |
+| `className`                  | `string`                       |                 |                                                                                               |
+| `clearButtonTitle`           | `string`                       |                 |                                                                                               |
+| `clearButtonClassName`       | `string`                       |                 | Customize the clear button                                                                    |
+| `customInput`                | `element`                      |                 |                                                                                               |
+| `customInputRef`             | `string`                       | `'ref'`         | The property used to pass the ref callback                                                    |
+| `dateFormat`                 | `union(string\|array)`         | `'MM/dd/yyyy'`  |                                                                                               |
+| `dateFormatCalendar`         | `string`                       | `'LLLL yyyy'`   |                                                                                               |
+| `dayClassName`               | `func`                         |                 |                                                                                               |
+| `weekDayClassName`           | `func`                         |                 |                                                                                               |
+| `disabled`                   | `bool`                         | `false`         |                                                                                               |
+| `disabledKeyboardNavigation` | `bool`                         | `false`         |                                                                                               |
+| `dropdownMode` (required)    | `enum('scroll'\|'select')`     | `'scroll'`      |                                                                                               |
+| `endDate`                    | `instanceOf(Date)`             |                 |                                                                                               |
+| `excludeDates`               | `array`                        |                 |                                                                                               |
+| `excludeDateIntervals`       | `array`                        |                 |                                                                                               |
+| `excludeTimes`               | `array`                        |                 |                                                                                               |
+| `excludeScrollbar`           | `array`                        |                 |                                                                                               |
+| `filterDate`                 | `func`                         |                 |                                                                                               |
+| `filterTime`                 | `func`                         |                 |                                                                                               |
+| `fixedHeight`                | `bool`                         |                 |                                                                                               |
+| `focusSelectedMonth`         | `bool`                         | `false`         |                                                                                               |
+| `forceShowMonthNavigation`   | `bool`                         |                 |                                                                                               |
+| `formatWeekNumber`           | `func`                         |                 |                                                                                               |
+| `highlightDates`             | `array`                        |                 |                                                                                               |
+| `id`                         | `string`                       |                 |                                                                                               |
+| `includeDates`               | `array`                        |                 |                                                                                               |
+| `includeDateIntervals`       | `array`                        |                 |                                                                                               |
+| `includeTimes`               | `array`                        |                 |                                                                                               |
+| `injectTimes`                | `array`                        |                 |                                                                                               |
+| `inline`                     | `bool`                         |                 |                                                                                               |
+| `isClearable`                | `bool`                         |                 |                                                                                               |
+| `locale`                     | `string`                       |                 |                                                                                               |
+| `maxDate`                    | `instanceOf(Date)`             |                 |                                                                                               |
+| `maxTime`                    | `instanceOf(Date)`             |                 |                                                                                               |
+| `minDate`                    | `instanceOf(Date)`             |                 |                                                                                               |
+| `minTime`                    | `instanceOf(Date)`             |                 |                                                                                               |
+| `monthsShown`                | `number`                       | `1`             |                                                                                               |
+| `name`                       | `string`                       |                 |                                                                                               |
+| `onBlur`                     | `func`                         | `function() {}` |                                                                                               |
+| `onCalendarClose`            | `func`                         |                 |                                                                                               |
+| `onCalendarOpen`             | `func`                         |                 |                                                                                               |
+| `onChange` (required)        | `func`                         | `function() {}` |                                                                                               |
+| `onChangeRaw`                | `func`                         |                 |                                                                                               |
+| `onClickOutside`             | `func`                         | `function() {}` |                                                                                               |
+| `onFocus`                    | `func`                         | `function() {}` |                                                                                               |
+| `onKeyDown`                  | `func`                         | `function() {}` |                                                                                               |
+| `onMonthChange`              | `func`                         | `function() {}` |                                                                                               |
+| `onSelect`                   | `func`                         | `function() {}` |                                                                                               |
+| `onWeekSelect`               | `func`                         |                 |                                                                                               |
+| `onYearChange`               | `func`                         | `function() {}` |                                                                                               |
+| `openToDate`                 | `instanceOf(Date)`             |                 |                                                                                               |
+| `peekNextMonth`              | `bool`                         |                 |                                                                                               |
+| `placeholderText`            | `string`                       |                 |                                                                                               |
+| `popperClassName`            | `string`                       |                 |                                                                                               |
+| `popperContainer`            | `func`                         |                 |                                                                                               |
+| `popperModifiers`            | `object`                       |                 |                                                                                               |
+| `popperPlacement`            | `enumpopperPlacementPositions` |                 |                                                                                               |
+| `preventOpenOnFocus`         | `bool`                         | false           | When this is true, the datepicker will not automatically open when the date field is focussed |
+| `readOnly`                   | `bool`                         |                 |                                                                                               |
+| `required`                   | `bool`                         |                 |                                                                                               |
+| `scrollableYearDropdown`     | `bool`                         |                 |                                                                                               |
+| `selected`                   | `instanceOf(Date)`             |                 |                                                                                               |
+| `selectsEnd`                 | `bool`                         |                 |                                                                                               |
+| `selectsStart`               | `bool`                         |                 |                                                                                               |
+| `shouldCloseOnSelect`        | `bool`                         | `true`          |                                                                                               |
+| `showMonthDropdown`          | `bool`                         |                 |                                                                                               |
+| `showTimeSelect`             | `bool`                         | `false`         |                                                                                               |
+| `showWeekNumbers`            | `bool`                         |                 |                                                                                               |
+| `showYearDropdown`           | `bool`                         |                 |                                                                                               |
+| `startDate`                  | `instanceOf(Date)`             |                 |                                                                                               |
+| `startOpen`                  | `bool`                         |                 |                                                                                               |
+| `tabIndex`                   | `number`                       |                 |                                                                                               |
+| `timeClassName`              | `func`                         |                 |                                                                                               |
+| `timeFormat`                 | `string`                       |                 |                                                                                               |
+| `timeIntervals`              | `number`                       | `30`            |                                                                                               |
+| `title`                      | `string`                       |                 |                                                                                               |
+| `todayButton`                | `node`                         |                 |                                                                                               |
+| `useWeekdaysShort`           | `bool`                         |                 |                                                                                               |
+| `utcOffset`                  | `union(number\|string)`        |                 |                                                                                               |
+| `value`                      | `string`                       |                 |                                                                                               |
+| `weekLabel`                  | `string`                       |                 |                                                                                               |
+| `withPortal`                 | `bool`                         | `false`         |                                                                                               |
+| `portalId`                   | `string`                       |                 |                                                                                               |
+| `portalHost`                 | `instanceOf(ShadowRoot)`       |                 | When set, portals will be attached to this ShadowRoot instead of the document body.           |
+| `wrapperClassName`           | `string`                       |
+|                              |
+| `yearItemNumber`             | `number`                       | `12`            |                                                                                               |
+| `yearDropdownItemNumber`     | `number`                       |                 |                                                                                               |

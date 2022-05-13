@@ -1,37 +1,36 @@
-import { useState } from "preact/hooks";
 import DatePicker from "react-datepicker";
 
-import { Logo } from "./logo";
-
-export function App() {
-  const [startDate, setStartDate] = useState(new Date());
-
+export function App({
+  dateFormat,
+  hoursFormat,
+  timeIntervals,
+  selectDate,
+  selectedDate,
+}) {
   return (
     <>
       <DatePicker
-        selected={startDate}
+        id="dddd-13"
+        showDisabledMonthNavigation
         showTimeSelect
-        onChange={(date) => setStartDate(date)}
-        wrapperClassName="wrapperClassName"
-        popperClassName="popperClassName"
-        popperPlacement="bottom-end"
-        popperModifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [500, 2],
-            },
-          },
-          {
-            name: "preventOverflow",
-            options: {
-              rootBoundary: "viewport",
-              tether: false,
-              altAxis: true,
-            },
-          },
-        ]}
+        timeIntervals={timeIntervals}
+        selected={selectedDate}
+        minDate={new Date()}
+        excludeTimes={[]}
+        onChange={(date) => selectDate(date)}
+        {...getFormat(dateFormat, hoursFormat)}
       />
     </>
   );
+}
+
+function getFormat(dateFormat, hoursFormat) {
+  return hoursFormat
+    ? {
+        timeFormat: "HH:mm",
+        dateFormat: `${dateFormat} HH:mm`,
+      }
+    : {
+        dateFormat: `${dateFormat} hh:mm aa`,
+      };
 }
