@@ -16,7 +16,7 @@ class PreactDataPicker {
   }) {
     this._oteContainer = oteContainer;
     this._selectedDate = new Date(defaultDateTime) || new Date();
-    this[dateFormat] = dateFormat || "yyyy-mm-dd";
+    this[dateFormat] = dateFormat || "yyyy-MM-dd";
     this[hoursFormat] = hoursFormat || false;
     this[intervals] = minutesIntervals || 5;
     this._render();
