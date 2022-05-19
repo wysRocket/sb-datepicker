@@ -5,7 +5,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 
-	<script type="module" crossorigin src="vite-preact-dp/dist/assets/index.043be2e4.js"></script>
+	<script type="module" crossorigin src="vite-preact-dp/dist/assets/index.efa19fb4.js"></script>
 
 	<script type="module">
 		const oteContainer = document.getElementById("datePicker");
@@ -14,20 +14,17 @@
 		const selectTz = document.getElementById("switch-tz");
 
 
-		const defaultFormat = "MMMM d, yyyy,";
+		const defaultFormat = "MMMM d, yyyy";
 		const apiFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
 		const picker = new DatePicker({
 			oteContainer,
 			defaultDateTime: "2022-05-16T17:03:05",
-			hoursFormat: 0,
 			dateFormat: defaultFormat,
 			minutesIntervals: 15,
-			dataDtSaveTimezone: "Etc/GMT",
-			dataDtTimezone: "America/Los_Angeles",
 			"data-dt-24h": 0,
 			"data-dt-timezone": "America/Los_Angeles",
-			"data-dt-saveTimezone": "Etc/GMT+5",
+			"data-dt-saveTimezone": "Etc/GMT",
 		});
 
 		selectTz.value = "user";

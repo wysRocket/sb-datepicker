@@ -65,14 +65,14 @@ export function App({
 }
 
 function getFormat(dateFormat, hoursFormat) {
-  return hoursFormat
-    ? {
-        timeFormat: "HH:mm",
-        dateFormat: `${dateFormat} HH:mm`,
-      }
-    : {
-        dateFormat: dateFormat.includes("HH:mm")
-          ? dateFormat
-          : `${dateFormat} HH:mm aa`,
-      };
+  return dateFormat.includes("HH:mm")
+    ? { dateFormat: dateFormat }
+    : hoursFormat
+        ? {
+            timeFormat: "HH:mm",
+            dateFormat: `${dateFormat} HH:mm`,
+          }
+        : {
+            dateFormat: `${dateFormat} h:mm aa`,
+          };
 }
