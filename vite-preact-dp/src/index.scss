@@ -27,8 +27,23 @@ body {
   padding-top: 100px;
 }
 
-.react-datepicker__triangle {
-  position: absolute;
-  left: 0px;
-  transform: translate(150px, 0px);
+.datepicker-input {
+  height: 30px;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.datePicker {
+  width: min-content;
+  height: min-content;
+}
+
+.wrapper-dt-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-input {
+  width: max-content;
 }
