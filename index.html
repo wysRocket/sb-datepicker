@@ -11,7 +11,8 @@
 		const oteContainer = document.getElementById("datePicker");
 		const buttonChangeFormat = document.getElementById("btnDateFormat");
 		const buttonSwitchHours = document.getElementById("btnHoursFormat");
-		const selectTz = document.getElementById("switch-tz");
+		const ote = document.getElementById("datetime1a");
+
 
 
 		const defaultFormat = "MMMM d, yyyy";
@@ -27,19 +28,7 @@
 			"data-dt-saveTimezone": "Etc/GMT",
 		});
 
-		selectTz.value = "user";
-		selectTz.addEventListener("change", (e) => {
-			switch (e.target.value) {
-				case "user":
-					picker.format = defaultFormat;
-					picker.date = picker.dateWithClientTimeZoneOffset;
-					return;
-				case "server":
-					picker.format = apiFormat;
-					picker.date = picker.dateWithServerTimeZoneOffset;
-					return;
-			}
-		});
+		buttonHideOte.addEventListener("click", () => ote.style.display = 'none');
 
 		buttonChangeFormat.addEventListener("click", () => picker.format = picker._dateFormat == defaultFormat ? apiFormat : defaultFormat);
 		buttonSwitchHours.addEventListener("click", () => picker.hours = picker.hours ? false : "24h");
@@ -51,15 +40,18 @@
 
 <body>
 	<h3> DateTimePicker </h3>
-	<div id="datePicker"></div>
+	<div id="datePicker">
+
+		<input id="datetime1a" value="20220530T21:00:00" data-dt-saveTimezone="Etc/GMT"
+			data-dt-timezone="America/Los_Angeles" data-dt-24h="0" />
+
+	</div>
+	<button id="btnHideOte">Hide OTE</button>
 	<br>
 	<button id="btnDateFormat">Swap date format</button>
 	<button id="btnHoursFormat">Toggle hours formating 12/24</button>
 
-	<select id="switch-tz">
-		<option value="server">server tz</option>
-		<option value="user">user tz</option>
-	</select>
+
 </body>
 
 </html>
