@@ -20,18 +20,20 @@ export function SBDatePicker({
   const dateWithClientOffset = utcToZonedTime(selectedDate, timeZone);
   const dateWithServerOffset = utcToZonedTime(selectedDate, saveTimezone);
 
-  const arrOfIntervals = timeInterval?.length && timeInterval?.split(",");
-  const setTimeIntervals = () =>
-    arrOfIntervals?.length > 1 ? 60 : arrOfIntervals?.[0];
+  const arrOfIntervals =
+    timeInterval?.length &&
+    timeInterval
+      ?.split(",")
+      .map((i) => Number(i))
+      .sort((a, b) => a - b);
+
+  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : 5);
 
   const setIncludedTimes = (timeZone) =>
-    arrOfIntervals?.length &&
-    Array(23).map((int) =>
-      utcToZonedTime(new Date(), timeZone)
-        .setHours(int)
-        .flatMap((hour) =>
-          arrOfIntervals.map((minutes) => hour.setMinutes(minutes))
-        )
+    [...Array(24).keys()].flatMap((int) =>
+      arrOfIntervals.map((minutes) =>
+        utcToZonedTime(new Date().setHours(int, minutes), timeZone)
+      )
     );
 
   const onCalendarClose = () => {
@@ -48,6 +50,11 @@ export function SBDatePicker({
 
   return (
     <ReactDatePicker
+      calendarContainer={({ children, className }) => (
+        <div className="calendar__container__wrapper">
+          <div className={className}>{children}</div>
+        </div>
+      )}
       renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(date)}
       timeClassName={handleColor}
@@ -57,23 +64,6 @@ export function SBDatePicker({
       className="datepicker-input1"
       data-name="picker"
       calendarClassName="rasta-stripes"
-      popperPlacement="top-start"
-      popperModifiers={[
-        {
-          name: "offset",
-          options: {
-            offset: [0, -10],
-          },
-        },
-        {
-          name: "preventOverflow",
-          options: {
-            rootBoundary: "viewport",
-            tether: false,
-            altAxis: true,
-          },
-        },
-      ]}
       id="dddd-13"
       showDisabledMonthNavigation
       showTimeSelect
@@ -83,10 +73,10 @@ export function SBDatePicker({
           ? currentDate || dateWithClientOffset
           : dateWithServerOffset
       }
-      minDate={new Date()}
-      timeIntervals={setTimeIntervals?.() || 5}
+      minDate={new Date(2012, 1, 1)}
+      timeIntervals={setTimeIntervals?.()}
       filterTime={setFilteredTime}
-      injectTimes={setIncludedTimes(timeZone)}
+      injectTimes={arrOfIntervals?.length && setIncludedTimes()}
       dateFormat={calendarVisible ? dateFormat : apiFormat}
     />
   );

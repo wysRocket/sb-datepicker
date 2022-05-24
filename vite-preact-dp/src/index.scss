@@ -19,7 +19,6 @@ body {
 }
 
 #app {
-  height: 100%;
   text-align: center;
   background-color: #673ab8;
   color: #fff;
@@ -27,9 +26,16 @@ body {
   padding-top: 100px;
 }
 
-.wrapper-dt-pick {
-  font-family: "Arial" sans-serif;
-  width: 294px;
+.calendar__container__wrapper {
+  padding: 8px;
+  border: 1px solid gray;
+  background: #fff;
+  position: relative;
+}
+
+.react-datepicker-wrapper {
+  width: min-content;
+  height: max-content;
 }
 
 .react-datepicker {
