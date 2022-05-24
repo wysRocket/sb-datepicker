@@ -1,7 +1,9 @@
 import ReactDatePicker from "react-datepicker";
 import { useState } from "preact/hooks";
-
 import { utcToZonedTime } from "date-fns-tz";
+import flatpickr from "flatpickr";
+
+import { Header } from "../Components/Header/header";
 
 export function SBDatePicker({
   dateFormat,
@@ -46,7 +48,7 @@ export function SBDatePicker({
 
   return (
     <ReactDatePicker
-      timeCaption=""
+      renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(date)}
       timeClassName={handleColor}
       onCalendarClose={onCalendarClose}
