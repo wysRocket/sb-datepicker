@@ -73,7 +73,7 @@ export function SBDatePicker({
           ? currentDate || dateWithClientOffset
           : dateWithServerOffset
       }
-      minDate={new Date(2012, 1, 1)}
+      minDate={new Date()}
       timeIntervals={setTimeIntervals?.()}
       filterTime={setFilteredTime}
       injectTimes={arrOfIntervals?.length && setIncludedTimes()}
