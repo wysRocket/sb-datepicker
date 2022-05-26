@@ -6,26 +6,26 @@ import "../index.scss";
 
 export class PreactDatePicker {
   constructor({
-    oteContainer,
+    dateContainer,
     defaultDateTime,
     dateFormat,
     minutesIntervals,
-    "data-dt-saveTimezone": saveTimeZone,
-    "data-dt-timezone": timeZone,
-    "data-dt-24h": dt24h,
+    saveTimezone,
+    timezone: timeZone,
+    h24,
     apiFormat,
     oteInput,
   }) {
-    this._oteContainer = oteContainer;
+    this._dateContainer = dateContainer;
     this._defaultDateTime = defaultDateTime || "";
     this._selectedDate = defaultDateTime
-      ? utcToZonedTime(new Date(defaultDateTime), saveTimeZone)
-      : utcToZonedTime(new Date(), saveTimeZone);
-    this._dateFormat = dateFormat || "MMMM d, yyyy, HH:mm aa";
-    this._hoursFormat = dt24h || 1;
-    this._minutesIntervals = minutesIntervals || 5;
+      ? utcToZonedTime(new Date(defaultDateTime), saveTimezone)
+      : utcToZonedTime(new Date(), saveTimezone);
+    this._dateFormat = dateFormat || "MMMM d, yyyy h:mm aa";
+    this._hoursFormat = h24 || 1;
+    this._minutesIntervals = minutesIntervals || "5";
     this._timeZone = timeZone || "";
-    this._saveTimezone = saveTimeZone;
+    this._saveTimezone = saveTimezone;
 
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss";
     this._oteInput = oteInput;
@@ -48,7 +48,7 @@ export class PreactDatePicker {
         saveTimezone={this._saveTimezone}
         defaultDateTime={this._defaultDateTime}
       />,
-      this._oteContainer
+      this._dateContainer
     );
 
   _selectDate = (date) => {
