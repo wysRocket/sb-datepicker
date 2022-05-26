@@ -11,7 +11,7 @@ Module can be upgraded with functionality and layout can be overwriten with `sas
 folder [vite-preact-dp] after updating the Module it can be compiled with
 
 ```bash
-npm run build
+vite build
 ```
 
 also need to import appropriate bundles to `index.html` cause their names are dynamicaly generated
