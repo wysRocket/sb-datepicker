@@ -12,6 +12,7 @@
     "flatpickr": "^4.6.13",
     "preact": "^10.5.15",
     "react-datepicker": "^4.8.0",
+    "react-simple-timefield": "^3.2.5",
     "sass": "^1.51.0"
   },
   "devDependencies": {

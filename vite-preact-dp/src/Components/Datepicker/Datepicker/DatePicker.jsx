@@ -2,8 +2,9 @@ import ReactDatePicker from "react-datepicker";
 import { useState } from "preact/hooks";
 import { utcToZonedTime } from "date-fns-tz";
 import flatpickr from "flatpickr";
-
-import { Header } from "../Components/Header/header";
+import { Container } from "../Container/Container";
+import { Header } from "../Header/Header";
+import './Datepicker.scss'
 
 export function SBDatePicker({
   dateFormat,
@@ -50,18 +51,15 @@ export function SBDatePicker({
 
   return (
     <ReactDatePicker
-      calendarContainer={({ children, className }) => (
-        <div className="calendar__container__wrapper">
-          <div className={className}>{children}</div>
-        </div>
-      )}
+      timeCaption=""
+      calendarContainer={Container}
       renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(date)}
       timeClassName={handleColor}
       onCalendarClose={onCalendarClose}
       onCalendarOpen={() => setCalendarVisible(true)}
       wrapperClassName="datePicker"
-      className="datepicker-input1"
+      className="datepicker-input"
       data-name="picker"
       calendarClassName="rasta-stripes"
       id="dddd-13"
