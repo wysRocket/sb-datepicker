@@ -1,4 +1,4 @@
-import "./Header.scss";
+import "./header.scss";
 
 export const Header = ({
   decreaseMonth,
