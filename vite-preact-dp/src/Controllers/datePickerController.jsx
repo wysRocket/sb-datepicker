@@ -13,33 +13,34 @@ export class PreactDatePicker {
     saveTimezone,
     timezone: timeZone,
     h24,
+    oteCallback,
     apiFormat,
-    oteInput,
+    minDate,
+    maxDate,
   }) {
     this._dateContainer = dateContainer;
     this._defaultDateTime = defaultDateTime || "";
     this._selectedDate = defaultDateTime
-      ? utcToZonedTime(new Date(defaultDateTime), saveTimezone)
-      : utcToZonedTime(new Date(), saveTimezone);
+      ? utcToZonedTime(new Date(defaultDateTime), timeZone)
+      : utcToZonedTime(new Date(), timeZone);
     this._dateFormat = dateFormat || "MMMM d, yyyy h:mm aa";
     this._hoursFormat = h24 || 1;
     this._minutesIntervals = minutesIntervals || "5";
     this._timeZone = timeZone || "";
     this._saveTimezone = saveTimezone;
-
+    this._oteCallback = oteCallback;
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss";
-    this._oteInput = oteInput;
-
+    this._minDate = minDate || undefined;
+    this._maxDate = maxDate || undefined;
     this._render();
   }
 
   _render = () =>
     render(
       <SBDatePicker
-        oteInput={this._oteInput}
-        customInput={this._container}
+        dateContainer={this._dateContainer}
         selectedDate={this._selectedDate}
-        selectDate={this._selectDate}
+        oteCallback={this._oteCallback}
         dateFormat={this._dateFormat}
         hoursFormat={this._hoursFormat}
         timeZone={this._timeZone}
@@ -47,6 +48,8 @@ export class PreactDatePicker {
         apiFormat={this._apiFormat}
         saveTimezone={this._saveTimezone}
         defaultDateTime={this._defaultDateTime}
+        mindate={this._minDate}
+        maxdate={this._maxDate}
       />,
       this._dateContainer
     );

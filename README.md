@@ -8,7 +8,20 @@ inside `index.html` i'm connecting compiled version of [React Date Picker](https
 compairing to any other module this one with 1.3M Weekly Downloads has best support
 
 Module can be upgraded with functionality and layout can be overwriten with `sass` variables inside
-folder [vite-preact-dp] after updating the Module it can be compiled with
+folder [vite-preact-dp]
+to start dev process we need to install dependencies with Yarn
+
+```bash
+yarn
+```
+
+to run the dev server
+
+```bash
+vite
+```
+
+after updating the Module it can be compiled with
 
 ```bash
 vite build
