@@ -1,5 +1,5 @@
 import { render } from "preact";
-import { utcToZonedTime } from "date-fns-tz";
+import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
 import { SBDatePicker } from "../Modules/datePicker";
 import "../index.scss";
@@ -23,8 +23,9 @@ export class PreactDatePicker {
     this._selectedDate = defaultDateTime
       ? utcToZonedTime(new Date(defaultDateTime), timeZone)
       : utcToZonedTime(new Date(), timeZone);
-    this._dateFormat = dateFormat || "MMMM d, yyyy h:mm aa";
-    this._hoursFormat = h24 || 1;
+    this._h24 = h24;
+    this._dateFormat =
+      dateFormat || { 1: "MMMM d, yyyy HH:mm" }[h24] || "MMMM d, yyyy h:mm aa";
     this._minutesIntervals = minutesIntervals || "5";
     this._timeZone = timeZone || "";
     this._saveTimezone = saveTimezone;
@@ -42,7 +43,6 @@ export class PreactDatePicker {
         selectedDate={this._selectedDate}
         oteCallback={this._oteCallback}
         dateFormat={this._dateFormat}
-        hoursFormat={this._hoursFormat}
         timeZone={this._timeZone}
         timeInterval={this._minutesIntervals}
         apiFormat={this._apiFormat}
@@ -60,19 +60,19 @@ export class PreactDatePicker {
   };
 
   get dateWithServerTimeZoneOffset() {
-    return utcToZonedTime(this._selectedDate, this._saveTimezone);
+    return zonedTimeToUtc(this._selectedDate, this._saveTimezone).toISOString();
   }
 
   get dateWithClientTimeZoneOffset() {
-    return utcToZonedTime(new Date(), this._timeZone);
+    return utcToZonedTime(this._selectedDate, this._timeZone);
   }
 
   get date() {
     return this._selectedDate;
   }
 
-  get hours() {
-    return this[hoursFormat];
+  get hoursFormat() {
+    return this._h24;
   }
 
   set date(date) {
@@ -91,8 +91,8 @@ export class PreactDatePicker {
   /**
    * @param {number} format
    */
-  set hours(format) {
-    this[hoursFormat] = format;
+  set hoursFormat(format) {
+    this._h24 = format;
     this._render();
   }
 

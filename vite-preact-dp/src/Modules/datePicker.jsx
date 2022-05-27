@@ -18,11 +18,10 @@ export function SBDatePicker({
   const [currentDate, setCurrentDate] = useState(selectedDate);
 
   useEffect(() => {
-    const newOTETime =
-      currentDate && saveTimezone
-        ? format(currentDate, apiFormat, { saveTimezone })
-        : "";
-    oteCallback?.(newOTETime);
+    if (currentDate && saveTimezone) {
+      const zonedTime = format(currentDate, apiFormat, { saveTimezone });
+      oteCallback?.(zonedTime);
+    }
   }, [currentDate, oteCallback]);
 
   const arrOfIntervals =
@@ -45,7 +44,7 @@ export function SBDatePicker({
     arrOfIntervals?.includes(time.getMinutes()) ? "" : "hide__time";
 
   const setFilteredTime = (time) =>
-    time.getTime() > utcToZonedTime(new Date(), timeZone).getTime() && time;
+    time?.getTime() > utcToZonedTime(new Date(), timeZone)?.getTime() && time;
 
   return (
     <ReactDatePicker
@@ -74,17 +73,4 @@ export function SBDatePicker({
       dateFormat={dateFormat}
     />
   );
-}
-
-function getFormat(dateFormat, hoursFormat) {
-  return dateFormat.includes("HH:mm")
-    ? { dateFormat }
-    : hoursFormat
-    ? {
-        timeFormat: "HH:mm",
-        dateFormat: `${dateFormat} HH:mm`,
-      }
-    : {
-        dateFormat: `${dateFormat} h:mm aa`,
-      };
 }
