@@ -1,24 +1,29 @@
 import ReactDatePicker from "react-datepicker";
-import { useState } from "preact/hooks";
-import { utcToZonedTime } from "date-fns-tz";
-import flatpickr from "flatpickr";
+import { useState, useEffect } from "preact/hooks";
+import { utcToZonedTime, format } from "date-fns-tz";
 
 import { Header } from "../Components/Header/header";
 
 export function SBDatePicker({
   dateFormat,
   timeInterval,
-  selectDate,
+  oteCallback,
   selectedDate,
   timeZone,
-  apiFormat,
   saveTimezone,
+  mindate,
+  apiFormat,
+  maxdate,
 }) {
-  const [calendarVisible, setCalendarVisible] = useState(false);
-  const [currentDate, setCurrentDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState(selectedDate);
 
-  const dateWithClientOffset = utcToZonedTime(selectedDate, timeZone);
-  const dateWithServerOffset = utcToZonedTime(selectedDate, saveTimezone);
+  useEffect(() => {
+    const newOTETime =
+      currentDate && saveTimezone
+        ? format(currentDate, apiFormat, { saveTimezone })
+        : "";
+    oteCallback?.(newOTETime);
+  }, [currentDate, oteCallback]);
 
   const arrOfIntervals =
     timeInterval?.length &&
@@ -29,18 +34,12 @@ export function SBDatePicker({
 
   const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : 5);
 
-  const setIncludedTimes = (timeZone) =>
+  const setIncludedTimes = () =>
     [...Array(24).keys()].flatMap((int) =>
       arrOfIntervals.map((minutes) =>
         utcToZonedTime(new Date().setHours(int, minutes), timeZone)
       )
     );
-
-  const onCalendarClose = () => {
-    setCalendarVisible(false);
-    currentDate && selectDate(currentDate);
-    setCurrentDate(null);
-  };
 
   const handleColor = (time) =>
     arrOfIntervals?.includes(time.getMinutes()) ? "" : "hide__time";
@@ -58,8 +57,6 @@ export function SBDatePicker({
       renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(date)}
       timeClassName={handleColor}
-      onCalendarClose={onCalendarClose}
-      onCalendarOpen={() => setCalendarVisible(true)}
       wrapperClassName="datePicker"
       className="datepicker-input1"
       data-name="picker"
@@ -68,16 +65,13 @@ export function SBDatePicker({
       showDisabledMonthNavigation
       showTimeSelect
       showPopperArrow={false}
-      selected={
-        calendarVisible
-          ? currentDate || dateWithClientOffset
-          : dateWithServerOffset
-      }
-      minDate={new Date()}
+      selected={currentDate}
+      minDate={mindate || new Date(2012, 1, 1)}
+      maxDate={maxdate || undefined}
       timeIntervals={setTimeIntervals?.()}
       filterTime={setFilteredTime}
       injectTimes={arrOfIntervals?.length && setIncludedTimes()}
-      dateFormat={calendarVisible ? dateFormat : apiFormat}
+      dateFormat={dateFormat}
     />
   );
 }
