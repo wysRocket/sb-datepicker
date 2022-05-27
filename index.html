@@ -6,7 +6,7 @@
     <script
       type="module"
       crossorigin
-      src="vite-preact-dp/dist/assets/index.a9ae0375.js"
+      src="vite-preact-dp/dist/assets/index.a951237e.js"
     ></script>
 
     <style type="text/css">
@@ -33,45 +33,34 @@
       href="vite-preact-dp/dist/assets/index.7152085d.css"
     />
 
-    <script type="module">
-      const oteContainer = document.getElementById("datePicker");
-      const buttonChangeFormat = document.getElementById("btnDateFormat");
-      const buttonSwitchHours = document.getElementById("btnHoursFormat");
-      const ote = document.getElementById("datetime1a");
+    <script>
+        function datePicker(oteId) {
+            var oteContainer = document.getElementById(oteId);
+            var nteId = oteId + '-dt';
+            oteContainer.outerHTML += "<div id=\"" + nteId + "\"></div>";
+            const nteContainer = document.getElementById(nteId);
+            var oteData = oteContainer.dataset;
 
-      const defaultFormat = "MMMM d, yyyy hh:mm";
-      const apiFormat = "yyyy-MM-dd'T'HH:mm:ss";
-
-      const picker = new DatePicker({
-        oteContainer,
-        defaultDateTime: "2022-05-16T17:03:05",
-        dateFormat: defaultFormat,
-        minutesIntervals: "9,17",
-        "data-dt-24h": 0,
-        "data-dt-timezone": "America/Los_Angeles",
-        "data-dt-saveTimezone": "Etc/GMT",
-      });
-
-      buttonHideOte.addEventListener(
-        "click",
-        () => (ote.style.display = "none")
-      );
-
-      buttonChangeFormat.addEventListener(
-        "click",
-        () =>
-          (picker.format =
-            picker._dateFormat == defaultFormat ? apiFormat : defaultFormat)
-      );
-      buttonSwitchHours.addEventListener(
-        "click",
-        () => (picker.hours = picker.hours ? false : "24h")
-      );
+            const picker = new DatePicker({
+                dateContainer: nteContainer,
+                defaultDateTime: oteContainer.value,
+                minutesIntervals: oteData['dtMinutesIntervals'],
+                h24: oteData['dtH24'],
+                timezone: oteData['dtTimezone'],
+                saveTimezone: oteData['dtSaveTimezone'],
+            });
+        }
     </script>
   </head>
 
-  <body>
+  <body onload="datePicker('datetime1a')">
     <h3>DateTimePicker</h3>
-    <div id="datePicker"></div>
+    <input type="hidden" id="datetime1a" value="2022-05-11T19:27:05"
+        data-dt-h24="0"
+        data-dt-min-date="2012-01-01T00:00:00"
+        data-dt-minutes-intervals="9,17"
+        data-dt-timezone="America/Los_Angeles"
+        data-dt-save-timezone="Etc/GMT"
+    />
   </body>
 </html>
