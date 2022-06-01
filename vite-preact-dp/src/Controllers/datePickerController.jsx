@@ -1,5 +1,5 @@
 import { render } from "preact";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { utcToZonedTime, zonedTimeToUtc, toDate } from "date-fns-tz";
 
 import { SBDatePicker } from "../Modules/datePicker";
 import "../index.scss";
@@ -19,20 +19,23 @@ export class PreactDatePicker {
     maxDate,
   }) {
     this._dateContainer = dateContainer;
-    this._defaultDateTime = defaultDateTime || "";
-    this._selectedDate = defaultDateTime
-      ? utcToZonedTime(new Date(defaultDateTime), timeZone)
-      : utcToZonedTime(new Date(), timeZone);
+
     this._h24 = h24;
     this._dateFormat =
       dateFormat || { 1: "MMMM d, yyyy HH:mm" }[h24] || "MMMM d, yyyy h:mm aa";
+    this._defaultDateTime =
+      toDate(defaultDateTime, { saveTimezone }) ||
+      toDate(new Date().toISOString(), { saveTimezone });
     this._minutesIntervals = minutesIntervals || "5";
-    this._timeZone = timeZone || "";
+    this._timeZone = timeZone;
     this._saveTimezone = saveTimezone;
     this._oteCallback = oteCallback;
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss";
-    this._minDate = minDate || undefined;
-    this._maxDate = maxDate || undefined;
+    this._selectedDate = zonedTimeToUtc(this._defaultDateTime, saveTimezone);
+    this._minDate =
+      toDate(minDate, { saveTimezone }) ||
+      toDate("2012-01-01T00:00:00", { saveTimezone });
+    this._maxDate = toDate(maxDate, { saveTimezone });
     this._render();
   }
 
@@ -47,7 +50,6 @@ export class PreactDatePicker {
         timeInterval={this._minutesIntervals}
         apiFormat={this._apiFormat}
         saveTimezone={this._saveTimezone}
-        defaultDateTime={this._defaultDateTime}
         mindate={this._minDate}
         maxdate={this._maxDate}
       />,
@@ -60,11 +62,11 @@ export class PreactDatePicker {
   };
 
   get dateWithServerTimeZoneOffset() {
-    return zonedTimeToUtc(this._selectedDate, this._saveTimezone).toISOString();
+    return zonedTimeToUtc(this._selectedDate, this._timeZone).toISOString();
   }
 
   get dateWithClientTimeZoneOffset() {
-    return utcToZonedTime(this._selectedDate, this._timeZone);
+    return utcToZonedTime(this._selectedDate, this._saveTimezone);
   }
 
   get date() {

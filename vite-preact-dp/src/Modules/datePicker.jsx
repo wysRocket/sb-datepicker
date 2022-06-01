@@ -1,6 +1,6 @@
 import ReactDatePicker from "react-datepicker";
 import { useState, useEffect } from "preact/hooks";
-import { utcToZonedTime, format } from "date-fns-tz";
+import { utcToZonedTime, toDate, zonedTimeToUtc, format } from "date-fns-tz";
 
 import { Header } from "../Components/Header/header";
 
@@ -15,12 +15,15 @@ export function SBDatePicker({
   apiFormat,
   maxdate,
 }) {
-  const [currentDate, setCurrentDate] = useState(selectedDate);
+  const [currentDate, setCurrentDate] = useState(
+    utcToZonedTime(selectedDate, timeZone)
+  );
 
   useEffect(() => {
-    if (currentDate && saveTimezone) {
-      const zonedTime = format(currentDate, apiFormat, { saveTimezone });
-      oteCallback?.(zonedTime);
+    if (currentDate && timeZone) {
+      const zonedDate = utcToZonedTime(currentDate.toISOString(), saveTimezone);
+      const outputDate = format(zonedDate, apiFormat, saveTimezone);
+      oteCallback?.(outputDate);
     }
   }, [currentDate, oteCallback]);
 
@@ -35,16 +38,20 @@ export function SBDatePicker({
 
   const setIncludedTimes = () =>
     [...Array(24).keys()].flatMap((int) =>
-      arrOfIntervals.map((minutes) =>
-        utcToZonedTime(new Date().setHours(int, minutes), timeZone)
-      )
+      arrOfIntervals.map((minutes) => {
+        const intervalDateTime = toDate(new Date().setHours(int, minutes), {
+          timeZone,
+        });
+        return utcToZonedTime(intervalDateTime, timeZone);
+      })
     );
 
   const handleColor = (time) =>
     arrOfIntervals?.includes(time.getMinutes()) ? "" : "hide__time";
 
   const setFilteredTime = (time) =>
-    time?.getTime() > utcToZonedTime(new Date(), timeZone)?.getTime() && time;
+    time?.getTime() >
+    utcToZonedTime(new Date().toISOString(), timeZone)?.getTime();
 
   return (
     <ReactDatePicker
@@ -54,7 +61,9 @@ export function SBDatePicker({
         </div>
       )}
       renderCustomHeader={Header}
-      onChange={(date) => setCurrentDate(date)}
+      onChange={(date) =>
+        setCurrentDate(utcToZonedTime(date.toISOString(), timeZone))
+      }
       timeClassName={handleColor}
       wrapperClassName="datePicker"
       className="datepicker-input1"
@@ -65,8 +74,8 @@ export function SBDatePicker({
       showTimeSelect
       showPopperArrow={false}
       selected={currentDate}
-      minDate={mindate || new Date(2012, 1, 1)}
-      maxDate={maxdate || undefined}
+      minDate={mindate}
+      maxDate={maxdate}
       timeIntervals={setTimeIntervals?.()}
       filterTime={setFilteredTime}
       injectTimes={arrOfIntervals?.length && setIncludedTimes()}
