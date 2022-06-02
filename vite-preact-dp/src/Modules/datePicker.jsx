@@ -1,8 +1,8 @@
-import ReactDatePicker from "react-datepicker";
-import { useState, useEffect } from "preact/hooks";
-import { utcToZonedTime, toDate, zonedTimeToUtc, format } from "date-fns-tz";
+import ReactDatePicker from 'react-datepicker'
+import { useState, useEffect } from 'preact/hooks'
+import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
 
-import { Header } from "../Components/Header/header";
+import { Header } from '../Components/Header/header'
 
 export function SBDatePicker({
   dateFormat,
@@ -15,43 +15,38 @@ export function SBDatePicker({
   apiFormat,
   maxdate,
 }) {
-  const [currentDate, setCurrentDate] = useState(
-    utcToZonedTime(selectedDate, timeZone)
-  );
+  const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
 
   useEffect(() => {
-    if (currentDate && timeZone) {
-      const zonedDate = utcToZonedTime(currentDate.toISOString(), saveTimezone);
-      const outputDate = format(zonedDate, apiFormat, saveTimezone);
-      oteCallback?.(outputDate);
+    if (currentDate && saveTimezone) {
+      const parsedDate = toDate(currentDate, { timeZone })
+      const utcDate = zonedTimeToUtc(parsedDate, timeZone)
+      const newDate = utcToZonedTime(utcDate.toISOString(), saveTimezone)
+      const formatedDate = format(newDate, apiFormat, saveTimezone)
+      oteCallback?.(formatedDate)
     }
-  }, [currentDate, oteCallback]);
+  }, [currentDate, oteCallback])
 
   const arrOfIntervals =
     timeInterval?.length &&
     timeInterval
-      ?.split(",")
+      ?.split(',')
       .map((i) => Number(i))
-      .sort((a, b) => a - b);
+      .sort((a, b) => a - b)
 
-  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : 5);
+  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : 5)
 
   const setIncludedTimes = () =>
     [...Array(24).keys()].flatMap((int) =>
       arrOfIntervals.map((minutes) => {
         const intervalDateTime = toDate(new Date().setHours(int, minutes), {
           timeZone,
-        });
-        return utcToZonedTime(intervalDateTime, timeZone);
+        })
+        return utcToZonedTime(intervalDateTime, timeZone)
       })
-    );
+    )
 
-  const handleColor = (time) =>
-    arrOfIntervals?.includes(time.getMinutes()) ? "" : "hide__time";
-
-  const setFilteredTime = (time) =>
-    time?.getTime() >
-    utcToZonedTime(new Date().toISOString(), timeZone)?.getTime();
+  const handleColor = (time) => (arrOfIntervals?.includes(time.getMinutes()) ? '' : 'hide__time')
 
   return (
     <ReactDatePicker
@@ -61,9 +56,7 @@ export function SBDatePicker({
         </div>
       )}
       renderCustomHeader={Header}
-      onChange={(date) =>
-        setCurrentDate(utcToZonedTime(date.toISOString(), timeZone))
-      }
+      onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
       timeClassName={handleColor}
       wrapperClassName="datePicker"
       className="datepicker-input1"
@@ -77,9 +70,8 @@ export function SBDatePicker({
       minDate={mindate}
       maxDate={maxdate}
       timeIntervals={setTimeIntervals?.()}
-      filterTime={setFilteredTime}
       injectTimes={arrOfIntervals?.length && setIncludedTimes()}
       dateFormat={dateFormat}
     />
-  );
+  )
 }
