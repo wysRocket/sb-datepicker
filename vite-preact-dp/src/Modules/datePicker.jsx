@@ -14,6 +14,7 @@ export function SBDatePicker({
   mindate,
   apiFormat,
   maxdate,
+  h24,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
 
@@ -65,6 +66,7 @@ export function SBDatePicker({
       id="dddd-13"
       showDisabledMonthNavigation
       showTimeSelect
+      timeFormat={h24 ? 'HH:mm' : 'h:mm aa'}
       showPopperArrow={false}
       selected={currentDate}
       minDate={mindate}
