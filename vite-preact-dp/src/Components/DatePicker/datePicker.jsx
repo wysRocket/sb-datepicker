@@ -37,7 +37,7 @@ export function SBDatePicker({
       .map((i) => Number(i))
       .sort((a, b) => a - b)
 
-  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : 5)
+  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : timeInterval || 5)
 
   const setIncludedTimes = () =>
     [...Array(24).keys()].flatMap((int) =>
@@ -45,11 +45,14 @@ export function SBDatePicker({
         const intervalDateTime = toDate(new Date().setHours(int, minutes), {
           timeZone,
         })
-        return utcToZonedTime(intervalDateTime, timeZone)
+        return utcToZonedTime(intervalDateTime.toISOString(), timeZone)
       })
     )
 
-  const handleColor = (time) => (arrOfIntervals?.includes(time.getMinutes()) ? '' : 'hide__time')
+  const handleColor = (time) =>
+    !arrOfIntervals || arrOfIntervals?.length === 1 || arrOfIntervals?.includes(time.getMinutes())
+      ? ''
+      : 'hide__time'
 
   return (
     <ReactDatePicker
