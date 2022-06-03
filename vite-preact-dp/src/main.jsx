@@ -1,4 +1,5 @@
 import { PreactDatePicker } from './Controllers/datePickerController'
+import { SBDurationPicker } from './Controllers/durationPickerController'
 
 // new PreactDatePicker({
 //   dateContainer: document.getElementById('app'),
@@ -12,4 +13,4 @@ import { PreactDatePicker } from './Controllers/datePickerController'
 
 window.DatePicker = PreactDatePicker
 
-// window.Duration = DurationPicker;
+window.DurationPicker = SBDurationPicker

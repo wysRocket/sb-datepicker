@@ -1,15 +1,12 @@
-@import "react-datepicker/dist/react-datepicker.css";
+@import 'react-datepicker/dist/react-datepicker.css';
 
-.calendar__container__wrapper {
-  padding: 8px;
-  border: 1px solid gray;
-  background: #fff;
-  position: relative;
+.datePicker {
+  width: max-content;
 }
 
-.react-datepicker-wrapper {
-  width: min-content;
-  height: max-content;
+.datepicker-input {
+  padding: 0;
+  margin: 0;
 }
 
 .react-datepicker {
@@ -37,6 +34,11 @@
 
 .react-datepicker__month {
   margin: 0;
+}
+
+.react-datepicker__week {
+  &:nth-child(3n + 2) {
+  }
 }
 
 .react-datepicker__day {

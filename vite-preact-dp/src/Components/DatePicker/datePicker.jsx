@@ -2,7 +2,9 @@ import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
 
-import { Header } from '../Components/Header/header'
+import { Header } from '../Header/header'
+import { Container } from '../Container/container'
+import './datePicker.scss'
 
 export function SBDatePicker({
   dateFormat,
@@ -51,11 +53,7 @@ export function SBDatePicker({
 
   return (
     <ReactDatePicker
-      calendarContainer={({ children, className }) => (
-        <div className="calendar__container__wrapper">
-          <div className={className}>{children}</div>
-        </div>
-      )}
+      calendarContainer={Container}
       renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
       timeClassName={handleColor}

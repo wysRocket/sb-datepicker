@@ -1,8 +1,7 @@
 import { render } from 'preact'
 import { utcToZonedTime, zonedTimeToUtc, toDate } from 'date-fns-tz'
 
-import { SBDatePicker } from '../Modules/datePicker'
-import '../index.scss'
+import { SBDatePicker } from '../Components/DatePicker/datePicker'
 
 export class PreactDatePicker {
   constructor({
