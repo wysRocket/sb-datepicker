@@ -54,10 +54,12 @@ export function SBDatePicker({
       ? ''
       : 'hide__time'
 
+  const setFilteredTime = (time) => time.getHours() !== 2
+
   return (
     <ReactDatePicker
       calendarContainer={Container}
-      renderCustomHeader={Header}
+      //   renderCustomHeader={Header}
       onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
       timeClassName={handleColor}
       wrapperClassName="datePicker"
@@ -75,6 +77,7 @@ export function SBDatePicker({
       timeIntervals={setTimeIntervals?.()}
       injectTimes={arrOfIntervals?.length && setIncludedTimes()}
       dateFormat={dateFormat}
+      filterTime={setFilteredTime}
     />
   )
 }
