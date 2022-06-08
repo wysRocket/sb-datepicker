@@ -1,0 +1,21 @@
+lockfileVersion: 5.4
+
+specifiers:
+  react-duration: ^1.0.8
+
+dependencies:
+  react-duration: 1.0.8
+
+packages:
+
+  /duration-formatter/1.0.7:
+    resolution: {integrity: sha512-uM0qX7L1HF1m3zX4yPYU264chtwZUmneHUmzEYG70pTO+PTjhSeMm7v6L+q+ZFOFerT39Gce6WXX+FMssBWplQ==}
+    dev: false
+
+  /react-duration/1.0.8:
+    resolution: {integrity: sha512-hfsl1R51TZ4J1RHWaQeT8nrIEKa+ShwDurwTd4phey+HmwuE0+OLhwKubM9PxxVx1+YAAupB9kPJMjQUZRCfeQ==}
+    peerDependencies:
+      react: ^16.8.6
+    dependencies:
+      duration-formatter: 1.0.7
+    dev: false

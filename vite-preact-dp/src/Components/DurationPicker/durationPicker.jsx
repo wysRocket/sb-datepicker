@@ -1,34 +1,54 @@
 import { useState, useRef } from 'preact/hooks'
 import TimeField from 'react-simple-timefield'
-
-import { SBDatePicker } from '../DatePicker/datePicker'
-import srcArrowUp from '../../assets/arrow-up.svg'
-import srcArrowDown from '../../assets/arrow-down.svg'
-
-import styles from './durationPicker.scss'
-
-const opt = ['Tungsten', 'Titanium', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Copper', 'Tin']
-
-let b = false
+import { ReactComponent as ArrowUp } from '../../assets/arrow-up.svg'
+import { ReactComponent as ArrowDown } from '../../assets/arrow-down.svg'
+import './durationPicker.scss'
+import DurationInput from 'react-duration'
 
 export const DurationPicker = ({}) => {
-  const [durationTime, setDurationTime] = useState('22:33:55')
+  const [durationTime, setDurationTime] = useState({ h: 3, m: 5, s: 45 })
   const intervalRef = useRef(null)
 
-  const onChange = (e, value) => {
-    setDurationTime(value)
+  const convertToStringTime = () =>
+    Object.keys(durationTime).reduce(
+      (acc, key, idx) =>
+        durationTime[key].toString().length < 2
+          ? acc + `0${durationTime[key]}` + (idx !== 2 ? ':' : '')
+          : acc + durationTime[key] + (idx !== 2 ? ':' : ''),
+      ''
+    )
+
+  const onChange = (e) => {
+    if (/^(?=.*?[1-9])[0-9()-:]+$/.test(e.target.value)) {
+      const time = e.target.value.split(':').map((i) => Number(i))
+      console.log(time)
+      setDurationTime((prevState) => ({
+        ...prevState,
+        h: time[0],
+        m: time[1],
+        s: time[2],
+      }))
+    } else {
+    }
   }
 
-  const increaseSeconds = () => {
+  const increaseSeconds = () =>
+    setDurationTime((prevState) => ({
+      ...prevState,
+      s: prevState.s + 1 > 59 ? 0 : prevState.s + 1,
+    }))
+
+  const decreaseSeconds = () =>
+    setDurationTime((prevState) => ({
+      ...prevState,
+      s: prevState.s - 1 < 0 ? 59 : prevState.s - 1,
+    }))
+
+  const wrappedInterval = (fn) => {
     if (intervalRef.current) return
     intervalRef.current = setInterval(() => {
-      setDurationTime((prevState) => {
-        console.log(prevState)
-        const b = Number(prevState.slice(prevState.length - 2)) + 1
-        const replacer = b > 59 ? (b.toString().length < 2 ? `0${b}` : b.toString()) : b.toString()
-        return prevState.replace(prevState.slice(prevState.length - 2), replacer)
-      })
-    }, 100)
+      fn()
+    }, 120)
   }
 
   const stopCounter = () => {
@@ -40,44 +60,44 @@ export const DurationPicker = ({}) => {
 
   return (
     <>
-      <div className={styles.header}>
-        <h4 className={styles.title}>Tier Delay</h4>
-        <div className={styles.durationPickerContainer}>
-          <TimeField
-            value={durationTime}
-            onChange={onChange}
-            className={styles.durationPickerInput}
-            inputRef={(ref) => {}}
-            colon=":"
-            showSeconds
-          />
-          <div className={styles.buttonGroupControl}>
-            <button
-              className={styles.inputButton}
-              onMouseDown={() => {
-                increaseSeconds()
-              }}
-              onMouseUp={() => {
-                stopCounter(false)
-              }}
-              onMouseOut={() => stopCounter(false)}
-            >
-              <img className={styles.buttonIcon} src={srcArrowUp} />
-            </button>
-            <button className={styles.inputButton}>
-              <img className={styles.buttonIcon} src={srcArrowDown} />
-            </button>
-          </div>
+      <div className={'durationPickerContainer'}>
+        <DurationInput
+          value={125.4}
+          // onChange={(new_duration) => this.setState({ duration: new_duration })}
+        />
+        {/* <input
+          type="text"
+          value={convertToStringTime()}
+          onChange={onChange}
+          className={'durationPickerInput'}
+          colon=":"
+          showSeconds
+          input={<input type="text" className="custom-input" />}
+        /> */}
+        <div className={'buttonGroupControl'}>
+          <button
+            className={'inputButton'}
+            onClick={increaseSeconds}
+            onMouseDown={() => {
+              wrappedInterval(increaseSeconds)
+            }}
+            onMouseUp={stopCounter}
+            onMouseOut={stopCounter}
+          >
+            <ArrowUp />
+          </button>
+          <button
+            onClick={decreaseSeconds}
+            onMouseDown={() => {
+              wrappedInterval(decreaseSeconds)
+            }}
+            onMouseUp={stopCounter}
+            onMouseOut={stopCounter}
+            className={'inputButton'}
+          >
+            <ArrowDown />
+          </button>
         </div>
-      </div>
-      <div className="">
-        {opt.map((option) => (
-          <div className={styles['list__item']}>
-            <input type="checkbox" />
-            <span>{option}</span>
-            <SBDatePicker selectedDate={new Date()} />
-          </div>
-        ))}
       </div>
     </>
   )

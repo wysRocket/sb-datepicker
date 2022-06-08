@@ -1,9 +1,6 @@
 import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect } from 'preact/hooks'
-import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
-
-import { Header } from '../Header/header'
-import { Container } from '../Container/container'
+import { utcToZonedTime, toDate, zonedTimeToUtc, format, formatInTimeZone } from 'date-fns-tz'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -19,9 +16,11 @@ export function SBDatePicker({
   h24,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
+  const [incTimes, setIncTimes] = useState([])
 
   useEffect(() => {
     if (currentDate && saveTimezone) {
+      setIncludedTimes()
       const parsedDate = toDate(currentDate, { timeZone })
       const utcDate = zonedTimeToUtc(parsedDate, timeZone)
       const newDate = utcToZonedTime(utcDate.toISOString(), saveTimezone)
@@ -40,13 +39,25 @@ export function SBDatePicker({
   const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : timeInterval || 5)
 
   const setIncludedTimes = () =>
-    [...Array(24).keys()].flatMap((int) =>
-      arrOfIntervals.map((minutes) => {
-        const intervalDateTime = toDate(new Date().setHours(int, minutes), {
-          timeZone,
-        })
-        return utcToZonedTime(intervalDateTime.toISOString(), timeZone)
-      })
+    setIncTimes(
+      [...Array(24).keys()].flatMap((int) =>
+        arrOfIntervals.reduce((acc, minutes) => {
+          const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), {
+            timeZone,
+          })
+          const formatedIntervalDT = utcToZonedTime(
+            new Date(intervalDateTime).toISOString(),
+            timeZone
+          )
+          const isAmbiguous =
+            intervalDateTime.toUTCString() !=
+            zonedTimeToUtc(formatedIntervalDT, timeZone).toUTCString()
+          console.log(isAmbiguous, intervalDateTime.toUTCString(), acc)
+          return isAmbiguous
+            ? acc
+            : [...acc, utcToZonedTime(intervalDateTime.toISOString(), timeZone)]
+        }, [])
+      )
     )
 
   const handleColor = (time) =>
@@ -54,12 +65,45 @@ export function SBDatePicker({
       ? ''
       : 'hide__time'
 
-  const setFilteredTime = (time) => time.getHours() !== 2
-
   return (
     <ReactDatePicker
-      calendarContainer={Container}
-      //   renderCustomHeader={Header}
+      calendarContainer={({ className, children }) => (
+        <div className="calendar__container__wrapper">
+          <div className={className}>{children}</div>
+        </div>
+      )}
+      renderCustomHeader={({
+        decreaseMonth,
+        increaseMonth,
+        monthDate,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+      }) => (
+        <div className="calendar__nav">
+          <button
+            aria-label="Previous Month"
+            className="calendar__nav__button calendar__nav__button--prev"
+            disabled={prevMonthButtonDisabled}
+            onClick={decreaseMonth}
+          >
+            &#9664;
+          </button>
+          <span className="calendar__nav__month__name">
+            {monthDate.toLocaleString('en-US', {
+              month: 'long',
+              year: 'numeric',
+            })}
+          </span>
+          <button
+            aria-label="Next Month"
+            className="calendar__nav__button calendar__nav__button--next"
+            disabled={nextMonthButtonDisabled}
+            onClick={increaseMonth}
+          >
+            &#9654;
+          </button>
+        </div>
+      )}
       onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
       timeClassName={handleColor}
       wrapperClassName="datePicker"
@@ -75,9 +119,8 @@ export function SBDatePicker({
       minDate={mindate}
       maxDate={maxdate}
       timeIntervals={setTimeIntervals?.()}
-      injectTimes={arrOfIntervals?.length && setIncludedTimes()}
+      injectTimes={arrOfIntervals?.length && incTimes}
       dateFormat={dateFormat}
-      filterTime={setFilteredTime}
     />
   )
 }

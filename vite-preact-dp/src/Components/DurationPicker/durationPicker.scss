@@ -1,33 +1,3 @@
-.flex {
-  display: flex;
-}
-
-.header {
-  width: 248px;
-  height: 28px;
-  border: 1px solid #a1a1a8;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  all: unset;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 15px;
-  width: 100%;
-  text-align: center;
-}
-
-.list__item {
-  display: flex;
-  justify-content: space-between;
-
-  & span {
-    width: 100%;
-  }
-}
 
 .durationPickerContainer {
   min-width: 128px;
@@ -37,7 +7,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-
+  
   &--invalid {
     outline-color: red;
   }
