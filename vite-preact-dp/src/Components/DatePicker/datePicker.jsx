@@ -1,6 +1,6 @@
 import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect } from 'preact/hooks'
-import { utcToZonedTime, toDate, zonedTimeToUtc, format, formatInTimeZone } from 'date-fns-tz'
+import { utcToZonedTime, toDate, zonedTimeToUtc, format, getTimezoneOffset } from 'date-fns-tz'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -16,11 +16,9 @@ export function SBDatePicker({
   h24,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
-  const [incTimes, setIncTimes] = useState([])
 
   useEffect(() => {
     if (currentDate && saveTimezone) {
-      setIncludedTimes()
       const parsedDate = toDate(currentDate, { timeZone })
       const utcDate = zonedTimeToUtc(parsedDate, timeZone)
       const newDate = utcToZonedTime(utcDate.toISOString(), saveTimezone)
@@ -39,25 +37,18 @@ export function SBDatePicker({
   const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : timeInterval || 5)
 
   const setIncludedTimes = () =>
-    setIncTimes(
-      [...Array(24).keys()].flatMap((int) =>
-        arrOfIntervals.reduce((acc, minutes) => {
-          const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), {
-            timeZone,
-          })
-          const formatedIntervalDT = utcToZonedTime(
-            new Date(intervalDateTime).toISOString(),
-            timeZone
-          )
-          const isAmbiguous =
-            intervalDateTime.toUTCString() !=
-            zonedTimeToUtc(formatedIntervalDT, timeZone).toUTCString()
-          console.log(isAmbiguous, intervalDateTime.toUTCString(), acc)
-          return isAmbiguous
-            ? acc
-            : [...acc, utcToZonedTime(intervalDateTime.toISOString(), timeZone)]
-        }, [])
-      )
+    [...Array(24).keys()].flatMap((int) =>
+      arrOfIntervals.reduce((acc, minutes) => {
+        const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), { timeZone })
+
+        const isAmbiguous =
+          getTimezoneOffset(timeZone, intervalDateTime) !=
+          getTimezoneOffset(timeZone, utcToZonedTime(intervalDateTime.toISOString(), timeZone))
+        console.log(isAmbiguous, intervalDateTime.toUTCString())
+        return isAmbiguous
+          ? acc
+          : [...acc, utcToZonedTime(intervalDateTime.toISOString(), timeZone)]
+      }, [])
     )
 
   const handleColor = (time) =>
@@ -119,7 +110,7 @@ export function SBDatePicker({
       minDate={mindate}
       maxDate={maxdate}
       timeIntervals={setTimeIntervals?.()}
-      injectTimes={arrOfIntervals?.length && incTimes}
+      injectTimes={arrOfIntervals?.length && setIncludedTimes()}
       dateFormat={dateFormat}
     />
   )
