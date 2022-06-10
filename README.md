@@ -1,6 +1,6 @@
 ## DatePicker
 
-Main variant build with the [ViteJS](https://vitejs.dev) because it compiles the bundle with the [ESBuild](https://esbuild.github.io)
+This variant is based on CRA
 
 Entry-point is the `index.html` to run it i'm using [LiveServer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 
@@ -8,7 +8,7 @@ inside `index.html` i'm connecting compiled version of [React Date Picker](https
 compairing to any other module this one with 1.3M Weekly Downloads has best support
 
 Module can be upgraded with functionality and layout can be overwriten with `sass` variables inside
-folder [vite-preact-dp]
+folder [react-sb]
 to start dev process we need to install dependencies with Yarn
 
 ```bash
@@ -18,13 +18,13 @@ yarn
 to run the dev server
 
 ```bash
-vite
+yarn start
 ```
 
 after updating the Module it can be compiled with
 
 ```bash
-vite build
+yarn build
 ```
 
 also need to import appropriate bundles to `index.html` cause their names are dynamicaly generated
