@@ -1,73 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-    <script
-      type="module"
-      crossorigin
-      src="vite-preact-dp/dist/assets/index.459d2cdb.js"
-    ></script>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
 
-    <style type="text/css">
-      * {
-        margin: 0;
-        padding: 0;
-      }
+    body {
+      background-color: #673ab8;
+      display: flex;
+      padding-top: 50px;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      body {
-        background-color: #673ab8;
-        display: flex;
-        padding-top: 50px;
-        flex-direction: column;
-        align-items: center;
-      }
+    .demo-platform {
+      display: flex;
+      gap: 20px;
+    }
 
-      h3 {
-        color: #fff;
-        margin: 10px;
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="vite-preact-dp/dist/assets/index.3fc80e37.css"
-    />
+    h3 {
+      color: #fff;
+      margin: 10px;
+    }
+  </style>
+  <link rel="stylesheet" href="./react-sb/build/static/css/main.bbac5370.css" />
 
-    <script>
-      function datePicker(oteId) {
-        var oteContainer = document.getElementById(oteId);
-        var nteId = oteId + "-dt";
-        oteContainer.outerHTML += '<div id="' + nteId + '"></div>';
-        const nteContainer = document.getElementById(nteId);
-        var oteData = oteContainer.dataset;
+  <script type="module" crossorigin src="./react-sb/build/static/js/main.97324fda.js"></script>
 
-        const picker = new DatePicker({
-          dateContainer: nteContainer,
-          defaultDateTime: oteContainer.value,
-          minutesIntervals: oteData["dtMinutesIntervals"],
-          h24: oteData["dtH24"],
-          timezone: oteData["dtTimezone"],
-          saveTimezone: oteData["dtSaveTimezone"],
-          oteCallback: function (dateString) {
-            oteContainer.value = dateString;
-            console.log(oteContainer.value);
-          },
-        });
-      }
-    </script>
-  </head>
+  <script>
+    function datePicker(oteId) {
+      console.log(document.getElementById('duration-input'))
+      var oteContainer = document.getElementById(oteId);
+      var nteId = oteId + "-dt";
+      oteContainer.outerHTML += '<div id="' + nteId + '"></div>';
+      const nteContainer = document.getElementById(nteId);
+      var oteData = oteContainer.dataset;
 
-  <body onload="datePicker('datetime1a')">
-    <h3>DateTimePicker</h3>
-    <input
-      type=""
-      id="datetime1a"
-      value="2022-05-31T22:00:00"
-      data-dt-h24="1"
-      data-dt-min-date="2012-01-01T00:00:00"
-      data-dt-minutes-intervals="9,17"
-      data-dt-timezone="America/Los_Angeles"
-      data-dt-save-timezone="America/New_York"
-    />
-  </body>
+      const picker = new DatePicker({
+        dateContainer: nteContainer,
+        defaultDateTime: oteContainer.value,
+        minutesIntervals: oteData["dtMinutesIntervals"],
+        h24: oteData["dtH24"],
+        timezone: oteData["dtTimezone"],
+        saveTimezone: oteData["dtSaveTimezone"],
+        oteCallback: function (dateString) {
+          oteContainer.value = dateString;
+          console.log(oteContainer.value);
+        },
+      });
+    }
+  </script>
+  <script type="module">
+
+    new DurationPicker({
+      container: document.getElementById('duration-input')
+    })
+
+    new DelayWidget({
+      container: document.getElementById('delay-widget')
+    })
+    
+  </script>
+</head>
+
+<body onload="datePicker('datetime1a')">
+  <div class="demo-platform">
+    <div class="demo-date-picker">
+      <h3>DateTimePicker</h3>
+      <input type="" id="datetime1a" value="2022-05-31T22:00:00" data-dt-h24="1" data-dt-min-date="2012-01-01T00:00:00"
+        data-dt-minutes-intervals="9,17" data-dt-timezone="America/Los_Angeles"
+        data-dt-save-timezone="America/New_York" />
+    </div>
+
+    <div class="demo-duration-input">
+      <h3>Duration Input</h3>
+      <div id="duration-input"></div>
+    </div>
+
+    <div class="demo-delay-widget">
+      <h3>Delay Widget</h3>
+      <div id="delay-widget"> </div>
+    </div>
+  </div>
+</body>
+
 </html>
