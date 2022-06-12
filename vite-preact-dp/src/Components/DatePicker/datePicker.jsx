@@ -1,6 +1,6 @@
 import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect } from 'preact/hooks'
-import { utcToZonedTime, toDate, zonedTimeToUtc, format, getTimezoneOffset } from 'date-fns-tz'
+import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -14,6 +14,7 @@ export function SBDatePicker({
   apiFormat,
   maxdate,
   h24,
+  toTimeZone,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
 
@@ -34,27 +35,21 @@ export function SBDatePicker({
       .map((i) => Number(i))
       .sort((a, b) => a - b)
 
-  const setTimeIntervals = () => (arrOfIntervals?.length > 1 ? 60 : timeInterval || 5)
+  const setIntervals = () => (arrOfIntervals?.length ? 60 : timeInterval || 5)
 
-  const setIncludedTimes = () =>
+  const setTimeIntervals = () =>
+    arrOfIntervals?.length &&
     [...Array(24).keys()].flatMap((int) =>
-      arrOfIntervals.reduce((acc, minutes) => {
-        const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), { timeZone })
-
-        const isAmbiguous =
-          getTimezoneOffset(timeZone, intervalDateTime) !=
-          getTimezoneOffset(timeZone, utcToZonedTime(intervalDateTime.toISOString(), timeZone))
-        console.log(isAmbiguous, intervalDateTime.toUTCString())
-        return isAmbiguous
-          ? acc
-          : [...acc, utcToZonedTime(intervalDateTime.toISOString(), timeZone)]
-      }, [])
+      arrOfIntervals.map((minutes) => {
+        const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), {
+          timeZone,
+        })
+        return utcToZonedTime(intervalDateTime.toISOString(), timeZone)
+      })
     )
 
   const handleColor = (time) =>
-    !arrOfIntervals || arrOfIntervals?.length === 1 || arrOfIntervals?.includes(time.getMinutes())
-      ? ''
-      : 'hide__time'
+    !arrOfIntervals || arrOfIntervals?.includes(time.getMinutes()) ? '' : 'hide__time'
 
   return (
     <ReactDatePicker
@@ -109,8 +104,8 @@ export function SBDatePicker({
       selected={currentDate}
       minDate={mindate}
       maxDate={maxdate}
-      timeIntervals={setTimeIntervals?.()}
-      injectTimes={arrOfIntervals?.length && setIncludedTimes()}
+      timeIntervals={setIntervals?.()}
+      injectTimes={setTimeIntervals?.()}
       dateFormat={dateFormat}
     />
   )

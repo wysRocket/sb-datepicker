@@ -183,9 +183,7 @@ export default class Time extends React.Component {
             this.centerLi = li;
           }
         }}
-        onKeyDown={(ev) => {
-          this.handleOnKeyDown(ev, time);
-        }}
+        onKeyDown={(ev) => this.handleOnKeyDown(ev, time)}
         tabIndex="0"
         aria-selected={
           this.isSelectedTime(time, currH, currM) ? "true" : undefined
@@ -225,9 +223,7 @@ export default class Time extends React.Component {
           <div className="react-datepicker__time-box">
             <ul
               className="react-datepicker__time-list"
-              ref={(list) => {
-                this.list = list;
-              }}
+              ref={(list) => (this.list = list)}
               style={height ? { height } : {}}
               tabIndex="0"
             >
