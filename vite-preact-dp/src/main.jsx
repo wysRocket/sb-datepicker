@@ -1,23 +1,27 @@
 import { PreactDatePicker } from './Controllers/datePickerController'
 import { SBDurationPicker } from './Controllers/durationPickerController'
 import { DelayWidget } from './Controllers/delayWidgetController'
+// const oteId = 'datetime1a';
+// var oteContainer = document.getElementById(oteId);
+// var nteId = oteId + "-dt";
+// oteContainer.outerHTML += '<div id="' + nteId + '"></div>';
+// const nteContainer = document.getElementById(nteId);
+// var oteData = oteContainer.dataset;
 
-// const oteId = 'datetime1a'
-// var oteContainer = document.getElementById(oteId)
-// var nteId = oteId + '-dt'
-// oteContainer.outerHTML += '<div id="' + nteId + '"></div>'
-// const nteContainer = document.getElementById(nteId)
-// var oteData = oteContainer.dataset
-
-// new PreactDatePicker({
-//   dateContainer: document.getElementById('app'),
-//   minutesIntervals: '30',
-//   h24: '1',
-//   timezone: 'America/Los_Angeles',
-//   saveTimezone: 'America/New_York',
-//   defaultDateTime: '2022-05-31T22:00:00',
-//   minDate: '2012-01-01T00:00:00',
-// })
+// const picker = new PreactDatePicker({
+//     dateContainer: nteContainer,
+//     defaultDateTime: oteContainer.value,
+//     minutesIntervals: oteData["dtMinutesIntervals"],
+//     h24: oteData["dtH24"] == 1 ? true : false,
+//     minDate: oteData["dtMinDate"],
+//     maxDate: oteData["dtMaxDate"],
+//     timezone: oteData["dtTimezone"],
+//     saveTimezone: oteData["dtSaveTimezone"],
+//     oteCallback: function (dateString) {
+//       document.getElementById(oteId).value = dateString;
+//       console.log(oteContainer.value);
+//     },
+//   });
 
 // new SBDurationPicker({  container: document.getElementById('duration-picker')})
 

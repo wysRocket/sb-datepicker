@@ -1,6 +1,7 @@
 import ReactDatePicker from 'react-datepicker'
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
+import { ArrowRight, ArrowLeft} from '../../ui/Arrow.js'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -17,6 +18,14 @@ export function SBDatePicker({
   toTimeZone,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    open &&
+      document
+        .querySelector('.react-datepicker__time-list-item--selected')
+        .scrollIntoView({ block: 'center' })
+  }, [open])
 
   useEffect(() => {
     if (currentDate && saveTimezone) {
@@ -28,14 +37,15 @@ export function SBDatePicker({
     }
   }, [currentDate, oteCallback])
 
-  const arrOfIntervals =
-    timeInterval?.length &&
-    timeInterval
-      ?.split(',')
-      .map((i) => Number(i))
-      .sort((a, b) => a - b)
+  const getArrayDefaultIntervals = (minInterval) =>
+    [...Array(60 / minInterval).keys()].map((i) => i * minInterval)
 
-  const setIntervals = () => (arrOfIntervals?.length ? 60 : timeInterval || 5)
+  const arrOfIntervals = timeInterval?.length
+    ? timeInterval
+        ?.split(',')
+        .map((i) => Number(i))
+        .sort((a, b) => a - b)
+    : getArrayDefaultIntervals(5)
 
   const setTimeIntervals = () =>
     arrOfIntervals?.length &&
@@ -48,11 +58,14 @@ export function SBDatePicker({
       })
     )
 
-  const handleColor = (time) =>
-    !arrOfIntervals || arrOfIntervals?.includes(time.getMinutes()) ? '' : 'hide__time'
+  const handleColor = (time) => {
+    return arrOfIntervals.includes(time.getMinutes()) ? '' : 'hide__time'
+  }
 
   return (
     <ReactDatePicker
+      onCalendarOpen={() => setOpen(true)}
+      onCalendarClose={() => setOpen(false)}
       calendarContainer={({ className, children }) => (
         <div className="calendar__container__wrapper">
           <div className={className}>{children}</div>
@@ -72,7 +85,7 @@ export function SBDatePicker({
             disabled={prevMonthButtonDisabled}
             onClick={decreaseMonth}
           >
-            &#9664;
+            <ArrowLeft/>
           </button>
           <span className="calendar__nav__month__name">
             {monthDate.toLocaleString('en-US', {
@@ -86,7 +99,7 @@ export function SBDatePicker({
             disabled={nextMonthButtonDisabled}
             onClick={increaseMonth}
           >
-            &#9654;
+           <ArrowRight/>
           </button>
         </div>
       )}
@@ -95,16 +108,16 @@ export function SBDatePicker({
       wrapperClassName="datePicker"
       className="datepicker-input1"
       data-name="picker"
-      calendarClassName="rasta-stripes"
+      calendarClassName="react-calendar"
       id="dddd-13"
       showDisabledMonthNavigation
       showTimeSelect
-      timeFormat={h24 ? 'HH:mm' : 'h:mm aa'}
+      timeFormat={h24? 'HH:mm' : 'h:mm aa'}
       showPopperArrow={false}
       selected={currentDate}
       minDate={mindate}
       maxDate={maxdate}
-      timeIntervals={setIntervals?.()}
+      timeIntervals={60}
       injectTimes={setTimeIntervals?.()}
       dateFormat={dateFormat}
     />

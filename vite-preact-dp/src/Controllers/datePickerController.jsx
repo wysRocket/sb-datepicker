@@ -20,19 +20,20 @@ export class PreactDatePicker {
     this._dateContainer = dateContainer
 
     this._h24 = h24
-    this._dateFormat = dateFormat || { 1: 'MMMM d, yyyy HH:mm' }[h24] || 'MMMM d, yyyy h:mm aa'
+    this._dateFormat = dateFormat || h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
     this._defaultDateTime =
       toDate(defaultDateTime, { saveTimezone }) ||
       toDate(new Date().toISOString(), { saveTimezone })
-    this._minutesIntervals = minutesIntervals || '5'
+    this._minutesIntervals = minutesIntervals
     this._timeZone = timeZone
     this._saveTimezone = saveTimezone
     this._oteCallback = oteCallback
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss"
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, saveTimezone)
-    this._minDate =
-      toDate(minDate, { saveTimezone }) || toDate('2012-01-01T00:00:00', { saveTimezone })
-    this._maxDate = toDate(maxDate, { saveTimezone })
+    this._minDate = minDate
+      ? toDate(minDate, { saveTimezone })
+      : toDate(new Date('2012-01-01T00:00:00'), { saveTimezone })
+    this._maxDate = maxDate ? toDate(maxDate, { saveTimezone }) : ''
     this._render()
   }
 
