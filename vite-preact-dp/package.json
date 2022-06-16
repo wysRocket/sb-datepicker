@@ -12,7 +12,8 @@
     "preact": "^10.5.15",
     "react-datepicker": "^4.8.0",
     "react-duration": "^1.0.8",
-    "react-simple-timefield": "^3.2.5"
+    "react-simple-timefield": "^3.2.5",
+    "vite-plugin-css-injected-by-js": "^1.5.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx-development": "^7.16.7",

@@ -1,7 +1,7 @@
 import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
-import { ArrowRight, ArrowLeft} from '../../ui/Arrow.js'
+import { ArrowRight, ArrowLeft } from '../../ui/Arrow.js'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -21,10 +21,14 @@ export function SBDatePicker({
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    setCurrentDate(utcToZonedTime(selectedDate, timeZone))
+  }, [selectedDate])
+
+  useEffect(() => {
     open &&
       document
         .querySelector('.react-datepicker__time-list-item--selected')
-        .scrollIntoView({ block: 'center' })
+        ?.scrollIntoView({ block: 'center' })
   }, [open])
 
   useEffect(() => {
@@ -61,7 +65,6 @@ export function SBDatePicker({
   const handleColor = (time) => {
     return arrOfIntervals.includes(time.getMinutes()) ? '' : 'hide__time'
   }
-
   return (
     <ReactDatePicker
       onCalendarOpen={() => setOpen(true)}
@@ -71,38 +74,6 @@ export function SBDatePicker({
           <div className={className}>{children}</div>
         </div>
       )}
-      renderCustomHeader={({
-        decreaseMonth,
-        increaseMonth,
-        monthDate,
-        prevMonthButtonDisabled,
-        nextMonthButtonDisabled,
-      }) => (
-        <div className="calendar__nav">
-          <button
-            aria-label="Previous Month"
-            className="calendar__nav__button calendar__nav__button--prev"
-            disabled={prevMonthButtonDisabled}
-            onClick={decreaseMonth}
-          >
-            <ArrowLeft/>
-          </button>
-          <span className="calendar__nav__month__name">
-            {monthDate.toLocaleString('en-US', {
-              month: 'long',
-              year: 'numeric',
-            })}
-          </span>
-          <button
-            aria-label="Next Month"
-            className="calendar__nav__button calendar__nav__button--next"
-            disabled={nextMonthButtonDisabled}
-            onClick={increaseMonth}
-          >
-           <ArrowRight/>
-          </button>
-        </div>
-      )}
       onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
       timeClassName={handleColor}
       wrapperClassName="datePicker"
@@ -110,9 +81,9 @@ export function SBDatePicker({
       data-name="picker"
       calendarClassName="react-calendar"
       id="dddd-13"
-      showDisabledMonthNavigation
       showTimeSelect
-      timeFormat={h24? 'HH:mm' : 'h:mm aa'}
+      fixedHeight
+      timeFormat={h24 ? 'HH:mm' : 'h:mm aa'}
       showPopperArrow={false}
       selected={currentDate}
       minDate={mindate}

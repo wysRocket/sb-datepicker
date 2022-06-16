@@ -17,13 +17,12 @@ export class PreactDatePicker {
     minDate,
     maxDate,
   }) {
-    this._dateContainer = dateContainer
-
-    this._h24 = h24
-    this._dateFormat = dateFormat || h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
     this._defaultDateTime =
-      toDate(defaultDateTime, { saveTimezone }) ||
-      toDate(new Date().toISOString(), { saveTimezone })
+      toDate(defaultDateTime, { timeZone: saveTimezone }) ||
+      toDate(new Date().toISOString(), { timeZone: saveTimezone })
+    this._dateContainer = dateContainer
+    this._h24 = h24 ? Number(h24) : 0
+    this._dateFormat = dateFormat || this._h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
     this._minutesIntervals = minutesIntervals
     this._timeZone = timeZone
     this._saveTimezone = saveTimezone
@@ -31,13 +30,26 @@ export class PreactDatePicker {
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss"
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, saveTimezone)
     this._minDate = minDate
-      ? toDate(minDate, { saveTimezone })
-      : toDate(new Date('2012-01-01T00:00:00'), { saveTimezone })
-    this._maxDate = maxDate ? toDate(maxDate, { saveTimezone }) : ''
+      ? toDate(minDate, { timeZone: saveTimezone })
+      : toDate(new Date('2012-01-01T00:00:00'), { timeZone: saveTimezone })
+    this._maxDate = maxDate ? toDate(maxDate, { timeZone: saveTimezone }) : ''
     this._render()
   }
 
-  _render = () =>
+  set hours24(h24) {
+    if (Number(h24) === this._24) return
+    this._h24 = Number(h24)
+    this._dateFormat = this._h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
+    this._render()
+  }
+
+  update = (value) => {
+    this._defaultDateTime = toDate(value, { timeZone: this._saveTimezone })
+    this._selectedDate = zonedTimeToUtc(this._defaultDateTime, this._saveTimezone)
+    this._render()
+  }
+
+  _render = () => {
     render(
       <SBDatePicker
         dateContainer={this._dateContainer}
@@ -55,6 +67,7 @@ export class PreactDatePicker {
       />,
       this._dateContainer
     )
+  }
 
   _selectDate = (date) => {
     this._selectedDate = date
