@@ -1,5 +1,5 @@
 import ReactDatePicker from 'react-datepicker'
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
 import './datePicker.scss'
 
@@ -16,12 +16,14 @@ export function SBDatePicker({
   h24,
   toTimeZone,
 }) {
-  const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
+  const [currentDate, setCurrentDate] = useState(
+    utcToZonedTime(selectedDate.toISOString(), timeZone)
+  )
   const [isInitialized, setInitialized] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    setCurrentDate(utcToZonedTime(selectedDate, timeZone))
+    setCurrentDate(utcToZonedTime(selectedDate.toISOString(), timeZone))
   }, [selectedDate])
 
   useEffect(() => {

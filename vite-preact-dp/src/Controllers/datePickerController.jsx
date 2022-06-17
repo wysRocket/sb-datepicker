@@ -18,8 +18,7 @@ export class PreactDatePicker {
     maxDate,
   }) {
     this._defaultDateTime =
-      toDate(defaultDateTime) ||
-      toDate(new Date().toISOString(), { timeZone: saveTimezone })
+      toDate(defaultDateTime) || toDate(new Date().toISOString(), { timeZone: saveTimezone })
     this._dateContainer = dateContainer
     this._h24 = h24 ? Number(h24) : 0
     this._dateFormat = dateFormat || this._h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
@@ -44,9 +43,14 @@ export class PreactDatePicker {
   }
 
   update = (value) => {
-    this._defaultDateTime = toDate(value)
+    if (!value) return
+
+    this._defaultDateTime =
+      typeof value === 'object'
+        ? toDate(value.toISOString(), { timeZone: saveTimezone })
+        : toDate(value)
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, this._saveTimezone)
-    const formatedDate = format(this._defaultDateTime, this._apiFormat,  this._saveTimezone)
+    const formatedDate = format(this._defaultDateTime, this._apiFormat, this._saveTimezone)
     this._oteCallback(formatedDate)
     this._render()
   }
