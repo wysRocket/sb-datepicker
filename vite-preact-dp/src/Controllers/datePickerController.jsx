@@ -44,7 +44,7 @@ export class PreactDatePicker {
   }
 
   update = (value) => {
-    this._defaultDateTime = toDate(value, { timeZone: this._saveTimezone })
+    this._defaultDateTime = toDate(value)
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, this._saveTimezone)
     this._render()
   }
