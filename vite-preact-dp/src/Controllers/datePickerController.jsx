@@ -1,5 +1,5 @@
 import { render } from 'preact'
-import { zonedTimeToUtc, toDate } from 'date-fns-tz'
+import { zonedTimeToUtc, toDate, format } from 'date-fns-tz'
 
 import { SBDatePicker } from '../Components/DatePicker/datePicker'
 
@@ -18,7 +18,7 @@ export class PreactDatePicker {
     maxDate,
   }) {
     this._defaultDateTime =
-      toDate(defaultDateTime, { timeZone: saveTimezone }) ||
+      toDate(defaultDateTime) ||
       toDate(new Date().toISOString(), { timeZone: saveTimezone })
     this._dateContainer = dateContainer
     this._h24 = h24 ? Number(h24) : 0
@@ -26,7 +26,7 @@ export class PreactDatePicker {
     this._minutesIntervals = minutesIntervals
     this._timeZone = timeZone
     this._saveTimezone = saveTimezone
-    this._oteCallback = oteCallback
+    this._oteCallback = oteCallback.bind(this)
     this._apiFormat = apiFormat || "yyyy-MM-dd'T'HH:mm:ss"
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, saveTimezone)
     this._minDate = minDate
@@ -46,6 +46,8 @@ export class PreactDatePicker {
   update = (value) => {
     this._defaultDateTime = toDate(value)
     this._selectedDate = zonedTimeToUtc(this._defaultDateTime, this._saveTimezone)
+    const formatedDate = format(this._defaultDateTime, this._apiFormat,  this._saveTimezone)
+    this._oteCallback(formatedDate)
     this._render()
   }
 

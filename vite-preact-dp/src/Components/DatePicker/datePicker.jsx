@@ -1,7 +1,6 @@
 import ReactDatePicker from 'react-datepicker'
 import { useState, useEffect, useRef } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
-import { ArrowRight, ArrowLeft } from '../../ui/Arrow.js'
 import './datePicker.scss'
 
 export function SBDatePicker({
@@ -18,6 +17,7 @@ export function SBDatePicker({
   toTimeZone,
 }) {
   const [currentDate, setCurrentDate] = useState(utcToZonedTime(selectedDate, timeZone))
+  const [isInitialized, setInitialized] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -32,14 +32,14 @@ export function SBDatePicker({
   }, [open])
 
   useEffect(() => {
-    if (currentDate && saveTimezone) {
+    if (currentDate && isInitialized) {
       const parsedDate = toDate(currentDate, { timeZone })
       const utcDate = zonedTimeToUtc(parsedDate, timeZone)
       const newDate = utcToZonedTime(utcDate.toISOString(), saveTimezone)
       const formatedDate = format(newDate, apiFormat, saveTimezone)
       oteCallback?.(formatedDate)
     }
-  }, [currentDate, oteCallback])
+  }, [currentDate, isInitialized])
 
   const getArrayDefaultIntervals = (minInterval) =>
     [...Array(60 / minInterval).keys()].map((i) => i * minInterval)
@@ -62,19 +62,24 @@ export function SBDatePicker({
       })
     )
 
-  const handleColor = (time) => {
-    return arrOfIntervals.includes(time.getMinutes()) ? '' : 'hide__time'
-  }
+  const handleColor = (time) => (arrOfIntervals.includes(time.getMinutes()) ? '' : 'hide__time')
+
   return (
     <ReactDatePicker
       onCalendarOpen={() => setOpen(true)}
-      onCalendarClose={() => setOpen(false)}
+      onCalendarClose={() => {
+        setOpen(false)
+        setInitialized(false)
+      }}
       calendarContainer={({ className, children }) => (
         <div className="calendar__container__wrapper">
           <div className={className}>{children}</div>
         </div>
       )}
-      onChange={(date) => setCurrentDate(toDate(date, { timeZone }))}
+      onChange={(date) => {
+        setCurrentDate(toDate(date, { timeZone }))
+        setInitialized(true)
+      }}
       timeClassName={handleColor}
       wrapperClassName="datePicker"
       className="datepicker-input1"
