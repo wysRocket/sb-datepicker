@@ -18,7 +18,9 @@ export class PreactDatePicker {
     maxDate,
   }) {
     this._defaultDateTime =
-      toDate(defaultDateTime) || toDate(new Date().toISOString(), { timeZone: saveTimezone })
+      typeof defaultDateTime === 'object'
+        ? toDate(defaultDateTime.toISOString(), { timeZone: saveTimezone })
+        : toDate(defaultDateTime) || toDate(new Date().toISOString(), { timeZone: saveTimezone })
     this._dateContainer = dateContainer
     this._h24 = h24 ? Number(h24) : 0
     this._dateFormat = dateFormat || this._h24 ? 'MMMM d, yyyy HH:mm' : 'MMMM d, yyyy h:mm aa'
