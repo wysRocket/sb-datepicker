@@ -1,5 +1,22 @@
 ## DatePicker
 
+Forked from original code. See CHANGES-SB.txt.
+
+To build:
+
+* `cd vite-preact-dp`
+* `./mybuild`
+* copy newly created `dist/assets/index.[a-z0-9].js` to `app/`
+
+Setting `minify: false` in `vite.config.js` will turn off minification.
+
+Replace `node_modules/react-datepicker-tz` with our git repo to modify that code. To build it, run `npm run build` in its root directory (probably also have to run `npm install` first).
+
+
+`~~~~~~~~~~~~~~~~`
+
+
+
 Main variant build with the [ViteJS](https://vitejs.dev) because it compiles the bundle with the [ESBuild](https://esbuild.github.io)
 
 Entry-point is the `index.html` to run it i'm using [LiveServer VSCode extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)

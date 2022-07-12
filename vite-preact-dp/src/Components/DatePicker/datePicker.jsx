@@ -1,4 +1,4 @@
-import ReactDatePicker from 'react-datepicker'
+import ReactDatePicker, { dateTimeToTime, safeDateFormat } from 'react-datepicker-tz'
 import { useState, useEffect } from 'preact/hooks'
 import { utcToZonedTime, toDate, zonedTimeToUtc, format } from 'date-fns-tz'
 import './datePicker.scss'
@@ -8,23 +8,33 @@ export function SBDatePicker({
   timeInterval,
   oteCallback,
   selectedDate,
+  selectedTime,
   timeZone,
   saveTimezone,
   mindate,
   apiFormat,
   maxdate,
   h24,
-  toTimeZone,
 }) {
-  const [currentDate, setCurrentDate] = useState(
-    utcToZonedTime(selectedDate.toISOString(), timeZone)
-  )
+  if (!maxdate) {
+    maxdate = null
+  }
+  if (!mindate) {
+    mindate = null
+  }
+
+  const sCD = (date, tz) => { if (date) { return utcToZonedTime(date.toISOString(), tz) } }
+  const sCT = (date, time, tz) => { if (date || time) { return utcToZonedTime(time ? time.toISOString() : date.toISOString(), tz) } }
+
+  const [currentDate, setCurrentDate] = useState( sCD(selectedDate, timeZone) )
+  const [currentTime, setCurrentTime] = useState( sCT(selectedDate, selectedTime, timeZone) )
   const [isInitialized, setInitialized] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    setCurrentDate(utcToZonedTime(selectedDate.toISOString(), timeZone))
-  }, [selectedDate])
+    setCurrentDate( sCD(selectedDate, timeZone) )
+    setCurrentTime( sCT(selectedDate, selectedTime, timeZone) )
+  }, [selectedDate, selectedTime])
 
   useEffect(() => {
     open &&
@@ -38,10 +48,18 @@ export function SBDatePicker({
       const parsedDate = toDate(currentDate, { timeZone })
       const utcDate = zonedTimeToUtc(parsedDate, timeZone)
       const newDate = utcToZonedTime(utcDate.toISOString(), saveTimezone)
-      const formatedDate = format(newDate, apiFormat, saveTimezone)
-      oteCallback?.(formatedDate)
+      var newTime = null
+
+      if (currentTime) {
+        const parsedTime = toDate(currentTime, { timeZone })
+        const utcTime = zonedTimeToUtc(parsedTime, timeZone)
+        newTime = utcToZonedTime(utcTime.toISOString(), saveTimezone)
+      }
+
+      const formattedDate = safeDateFormat(newDate, { dateFormat: apiFormat, selectedTime: newTime })
+      oteCallback?.(formattedDate)
     }
-  }, [currentDate, isInitialized])
+  }, [currentDate, currentTime])
 
   const getArrayDefaultIntervals = (minInterval) =>
     [...Array(60 / minInterval).keys()].map((i) => i * minInterval)
@@ -53,16 +71,24 @@ export function SBDatePicker({
         .sort((a, b) => a - b)
     : getArrayDefaultIntervals(5)
 
-  const setTimeIntervals = () =>
-    arrOfIntervals?.length &&
-    [...Array(24).keys()].flatMap((int) =>
-      arrOfIntervals.map((minutes) => {
-        const intervalDateTime = toDate(new Date(currentDate).setHours(int, minutes), {
-          timeZone,
+  const filterPassedTime = (time) => time === null ? false : true
+
+  const setTimeIntervals = () => {
+    if (arrOfIntervals?.length) {
+      var found = []
+      return [...Array(24).keys()].flatMap((hours) =>
+        arrOfIntervals.map((minutes) => {
+          var date = dateTimeToTime(currentDate)
+          date.setHours(hours, minutes)
+          var dateStr = date.toString()
+          if (! found[dateStr]) {
+            found[dateStr] = 1
+            return date
+          }
         })
-        return utcToZonedTime(intervalDateTime.toISOString(), timeZone)
-      })
-    )
+      )
+    }
+  }
 
   const handleColor = (time) => (arrOfIntervals.includes(time.getMinutes()) ? '' : 'hide__time')
 
@@ -78,8 +104,9 @@ export function SBDatePicker({
           <div className={className}>{children}</div>
         </div>
       )}
-      onChange={(date) => {
+      onChange={(date, e, time) => {
         setCurrentDate(toDate(date, { timeZone }))
+        setCurrentTime(time ? toDate(time, { timeZone }): null)
         setInitialized(true)
       }}
       timeClassName={handleColor}
@@ -87,15 +114,16 @@ export function SBDatePicker({
       className="datepicker-input1"
       data-name="picker"
       calendarClassName="react-calendar"
-      id="dddd-13"
       showTimeSelect
       fixedHeight
       timeFormat={h24 ? 'HH:mm' : 'h:mm aa'}
       showPopperArrow={false}
       selected={currentDate}
+      selectedTime={currentTime}
       minDate={mindate}
       maxDate={maxdate}
-      timeIntervals={60}
+      timeIntervals={100000}
+      filterTime={filterPassedTime}
       injectTimes={setTimeIntervals?.()}
       dateFormat={dateFormat}
     />

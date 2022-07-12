@@ -1,0 +1,20 @@
+Forked from https://github.com/wysRocket/sb-datepicker
+
+Changes:
+* Remove all duration/delay code
+* Remove formatting cruft
+* Fix bug for empty minDate/maxDate generating warnings
+* Formatted date for oteCallback uses safeDateFormat from react-datepicker-tz
+* Set timeIntervals to high value (100,000) so we never have the system setting the (possibly invalid, out-of-order) times
+    * this is a bug in react-datepicker that treats injected times differently from timeIntervals times, so they are sometimes off by an hour from each other, and out of order
+* injectTimes skip times that are duplicated
+* filterTime ignore undef times
+* on change in DatePicker, receive selectedTime (in addition to selectedDate), and sends combined formatted datetime to callback
+
+Bugs:
+* In the callback, calling .update() on another datepicker messes up the state of the first datepicker, showing the original datetime; to get around this, we put a small delay on the .update() calls
+
+
+TODO:
+* verify tz support: we maintained multiple tz support, but largely untested, since currently only using single tz
+* repeat / test build process

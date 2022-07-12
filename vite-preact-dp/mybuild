@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+#npm run build --prefix node_modules/react-datepicker-tz
+npm run build | perl -e '
+while(<>) {
+    print;
+    $x = $1 if m|dist/assets/index\.(\w+)\.js|;
+}
+exit -1 unless $x;
+
+open my $fh, "<", "../index.html" or die $!;
+my $t = join "", <$fh>;
+close $fh;
+
+$t =~ s|(dist/assets/index\.)\w+?(\.js)|$1$x$2|;
+#system("cenoview $1$x$2");
+
+open $fh, ">", "../index.html" or die $!;
+print $fh $t;
+exit 0;
+'
+
+#perl -e 'print "\007"'
+
