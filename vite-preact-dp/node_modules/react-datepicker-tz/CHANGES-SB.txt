@@ -1,0 +1,31 @@
+Forked from https://github.com/Hacker0x01/react-datepicker
+
+Changes:
+
+* new function: dateTimeToTime
+    * creates a "time" object (selectedTime) that is a Date object set to June 1, so all hours/minutes are valid
+* new functions: setDateTimeFrom*
+    * setDateTimeFromDate: sets hours and minutes on a Date object, from a Date object
+    * setDateTimeFromString: sets hours and minutes on a Date object, from a date string
+    * setDateTimeFromHHMM: sets hours and minutes on a Date object, from hours and minutes
+* new property on DatePicker, Calendar, Time: selectedTime
+* changed function: safeDateFormat
+    * now uses optional selectedTime property to create a formatted datetime string using hybrid of the two dates, one for date and one for time
+* new exports: dateTimeToTime, setDateTimeFromDate, setDateTimeFromString, setDateTimeFromHHMM, safeDateFormat
+
+
+New behavior:
+
+* DatePicker shows times using selectedTime, so all hours show in picker, regardless of DST; and formatted date input shows hours that might be missing because of DST
+    * selectedTime value is set on object and passed through to constructors of other objects, and updated on changes
+        * caller sets in DatePicker constructor
+        * DatePicker sets in Calendar constructor
+        * Calendar sets in Time constructor
+    * On change (parsing field, or selecting time in picker, etc.), selectedTime is saved in properties, and is updated in the caller via onChange (SBDatePicker)
+    * DatePicker sets selectedTime from state in Calendar (WrappedCalendar) object
+    * Calendar sets selectedTime in Time object
+    * Time object uses selectedTime (if set) for selecting the set time in list
+
+Bugs:
+* no known bugs
+
