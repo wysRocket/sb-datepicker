@@ -10,8 +10,7 @@ To build:
 
 Setting `minify: false` in `vite.config.js` will turn off minification.
 
-Replace `node_modules/react-datepicker-tz` with our git repo to modify that code. To build it, run `npm run build` in its root directory (probably also have to run `npm install` first).
-
+Replace `node_modules/react-datepicker-tz` with our git repo to modify that code. To build it, run `npm run build` in its root directory (probably also have to run `npm install` -- with `--force` if necessary -- first).
 
 `~~~~~~~~~~~~~~~~`
 

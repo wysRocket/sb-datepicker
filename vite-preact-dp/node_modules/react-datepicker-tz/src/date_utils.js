@@ -87,7 +87,7 @@ export function setDateTimeFromString(dirtyDateTime, dateStr) {
     var hours = parseInt(matches[1]);
     var minutes = parseInt(matches[2]);
     if (Number.isInteger(hours) && Number.isInteger(minutes)) {
-      var ampm = matches[3];
+      var ampm = matches[4];
       if (ampm) {
         var pm = ampm.match(/P/i) ? true : false;
         if (hours == 12) {

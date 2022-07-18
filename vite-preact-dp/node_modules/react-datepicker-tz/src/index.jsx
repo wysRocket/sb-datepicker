@@ -502,6 +502,7 @@ export default class DatePicker extends React.Component {
     if (date) {
       let selectedTime = setDateTimeFromString(dateTimeToTime(date), event.target.value);
       if (selectedTime) {
+        this.setState({ selectedTime: selectedTime })
         this.props.selectedTime = selectedTime
       }
     }
@@ -602,7 +603,7 @@ export default class DatePicker extends React.Component {
           onChange([changedDate, null], event);
         }
       } else {
-        onChange(changedDate, event);
+        onChange(changedDate, event, this.props.selectedTime || this.state.selectedTime);
       }
     }
 
@@ -1002,6 +1003,8 @@ export default class DatePicker extends React.Component {
 
     const customInput = this.props.customInput || <input type="text" />;
     const customInputRef = this.props.customInputRef || "ref";
+
+    this.props.selectedTime ||= this.state.selectedTime;
     const inputValue =
       typeof this.props.value === "string"
         ? this.props.value
