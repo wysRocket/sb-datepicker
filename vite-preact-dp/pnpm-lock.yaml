@@ -22,7 +22,7 @@ dependencies:
     version: 3.2.5(prop-types@15.8.1)(react-dom@17.0.2)(react@16.14.0)
   vite-plugin-css-injected-by-js:
     specifier: ^1.5.1
-    version: 1.5.1(vite@2.9.12)
+    version: 1.5.1(vite@2.9.17)
 
 devDependencies:
   '@babel/plugin-transform-react-jsx-development':
@@ -30,16 +30,16 @@ devDependencies:
     version: 7.16.7(@babel/core@7.18.5)
   '@preact/preset-vite':
     specifier: ^2.1.5
-    version: 2.2.0(@babel/core@7.18.5)(preact@10.8.0)(vite@2.9.12)
+    version: 2.2.0(@babel/core@7.18.5)(preact@10.8.0)(vite@2.9.17)
   sass:
     specifier: ^1.51.0
     version: 1.52.3
   vite:
-    specifier: ^2.9.7
-    version: 2.9.12(sass@1.52.3)
+    specifier: ^2.9.17
+    version: 2.9.17(sass@1.52.3)
   vite-plugin-svgr:
     specifier: ^2.1.0
-    version: 2.1.0(vite@2.9.12)
+    version: 2.1.0(vite@2.9.17)
 
 packages:
 
@@ -426,7 +426,7 @@ packages:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
     dev: false
 
-  /@preact/preset-vite@2.2.0(@babel/core@7.18.5)(preact@10.8.0)(vite@2.9.12):
+  /@preact/preset-vite@2.2.0(@babel/core@7.18.5)(preact@10.8.0)(vite@2.9.17):
     resolution: {integrity: sha512-xOtPzyVSPphUF/tRnzjxkCR/ovbCS6O25ekdCw5MGKcaAkb6PDRo50tS1x2n0+O9qL7Z/qrHJKpyCVn29A4iMg==}
     peerDependencies:
       '@babel/core': 7.x
@@ -435,13 +435,13 @@ packages:
       '@babel/core': 7.18.5
       '@babel/plugin-transform-react-jsx': 7.17.12(@babel/core@7.18.5)
       '@babel/plugin-transform-react-jsx-development': 7.16.7(@babel/core@7.18.5)
-      '@prefresh/vite': 2.2.8(preact@10.8.0)(vite@2.9.12)
+      '@prefresh/vite': 2.2.8(preact@10.8.0)(vite@2.9.17)
       '@rollup/pluginutils': 4.2.1
       babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.18.5)
       debug: 4.3.4
       kolorist: 1.5.1
       resolve: 1.22.0
-      vite: 2.9.12(sass@1.52.3)
+      vite: 2.9.17(sass@1.52.3)
     transitivePeerDependencies:
       - preact
       - supports-color
@@ -463,7 +463,7 @@ packages:
     resolution: {integrity: sha512-Mb9abhJTOV4yCfkXrMrcgFiFT7MfNOw8sDa+XyZBdq/Ai2p4Zyxqsb3EgHLOEdHpMj6J9aiZ54W8H6FTam1u+A==}
     dev: true
 
-  /@prefresh/vite@2.2.8(preact@10.8.0)(vite@2.9.12):
+  /@prefresh/vite@2.2.8(preact@10.8.0)(vite@2.9.17):
     resolution: {integrity: sha512-yGGa+PKPYPTzMlxgQ8aBgxw9K69I8X4iQ0E6KOcIvls96WKqKLLOYZW9SUgCve446jpUXvc9udviPBZjCeZIIQ==}
     peerDependencies:
       preact: ^10.4.0
@@ -475,7 +475,7 @@ packages:
       '@prefresh/utils': 1.1.3
       '@rollup/pluginutils': 4.2.1
       preact: 10.8.0
-      vite: 2.9.12(sass@1.52.3)
+      vite: 2.9.17(sass@1.52.3)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1376,27 +1376,27 @@ packages:
     dependencies:
       is-number: 7.0.0
 
-  /vite-plugin-css-injected-by-js@1.5.1(vite@2.9.12):
+  /vite-plugin-css-injected-by-js@1.5.1(vite@2.9.17):
     resolution: {integrity: sha512-D/xdY9sWijCdoIbp5qiUejVShyTt1omzeyMwoyXWSuaXc9d/RtWdv/v7iv+i8F0KavWhK+U7nmOuxliyeFR+pA==}
     peerDependencies:
       vite: '>2.0.0-0'
     dependencies:
-      vite: 2.9.12(sass@1.52.3)
+      vite: 2.9.17(sass@1.52.3)
     dev: false
 
-  /vite-plugin-svgr@2.1.0(vite@2.9.12):
+  /vite-plugin-svgr@2.1.0(vite@2.9.17):
     resolution: {integrity: sha512-3J19p8pmGfRt297yvc8Fd36+0AC0sLgA/gZYQDjotNAhv3CmSTQyviXIrDbwiRFVrsZjSlHJH1vca7OGFmjDcA==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.2.1
-      vite: 2.9.12(sass@1.52.3)
+      vite: 2.9.17(sass@1.52.3)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite@2.9.12(sass@1.52.3):
-    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
+  /vite@2.9.17(sass@1.52.3):
+    resolution: {integrity: sha512-XxcRzra6d7xrKXH66jZUgb+srThoPu+TLJc06GifUyKq9JmjHkc1Numc8ra0h56rju2jfVWw3B3fs5l3OFMvUw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
